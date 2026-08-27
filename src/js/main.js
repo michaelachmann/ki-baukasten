@@ -159,6 +159,17 @@ function markdownToHtml(text){
 }
 function getFormData(){ const data=new FormData(form); return {course:data.get('course')||'',lecturer:data.get('lecturer')||'',semester:data.get('semester')||'',date:data.get('date')||'',allowedExamples:data.get('allowedExamples')||'',forbiddenExamples:data.get('forbiddenExamples')||'',notes:data.get('notes')||'',lang:state.lang,areas:structuredClone(state.areas),docs:[...state.docs]}; }
 
+function formatDate(dateStr, lang = 'de'){
+  if(!dateStr) return '';
+  try {
+    const d = new Date(`${dateStr}T12:00:00`);
+    if(isNaN(d.getTime())) return dateStr;
+    return new Intl.DateTimeFormat(lang==='de'?'de-DE':'en-GB').format(d);
+  } catch {
+    return dateStr;
+  }
+}
+
 function cardHeader(tr,s,date,title){
   return `<div class="card-identity"><img class="card-logo" src="${logoUrl}" alt=""><span class="card-bars" aria-hidden="true"><i></i><i></i></span><span class="card-department"><strong>${escapeHtml(s.lecturer)}</strong><span>${escapeHtml(tr.subtitle)}</span></span></div><header class="card-header"><div><div class="card-kicker">${tr.formTitle}</div><h3 class="card-title">${escapeHtml(title)}</h3></div><div class="card-meta"><span class="meta-lecturer">${escapeHtml(s.lecturer)}<br></span>${escapeHtml(s.semester)}<br>${date}</div></header>`;
 }
@@ -166,7 +177,7 @@ function pageMarker(tr,n,total){ return total>1?`<span class="page-marker">${tr.
 
 function renderOutput(){
   const s=snapshot, tr=strings(s.lang);
-  const date=s.date?new Intl.DateTimeFormat(s.lang==='de'?'de-DE':'en-GB').format(new Date(`${s.date}T12:00:00`)):'';
+  const date=formatDate(s.date,s.lang);
   const total=hasDetails(s)?2:1;
   const grid=`<div class="policy-grid">${tr.areas.map((name,i)=>{const a=s.areas[i],x=statuses[a.status];return `<div class="policy-row"><span class="policy-row-copy"><span>${name}</span>${a.note?`<span class="policy-row-note">${escapeHtml(a.note)}</span>`:''}</span><span class="policy-status" style="${cssStatus(a.status)}">${x.glyph}</span></div>`}).join('')}</div>`;
   const selectedDocs=s.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean);
@@ -187,7 +198,7 @@ function renderOutput(){
 }
 
 function buildText(s){
-  const tr=translations[s.lang], lines=[`${tr.formTitle}: ${s.course}`,`${tr.fields.lecturer}: ${s.lecturer}`,`${tr.fields.semester}: ${s.semester}`,`${tr.fields.date}: ${s.date}`,'',tr.areasHeading];
+  const tr=translations[s.lang], date=formatDate(s.date,s.lang), lines=[`${tr.formTitle}: ${s.course}`,`${tr.fields.lecturer}: ${s.lecturer}`,`${tr.fields.semester}: ${s.semester}`,`${tr.fields.date}: ${date}`,'',tr.areasHeading];
   tr.areas.forEach((name,i)=>lines.push(`- ${statuses[s.areas[i].status].glyph} ${name}: ${tr.status[s.areas[i].status]}${s.areas[i].note?` — ${s.areas[i].note}`:''}`));
   const docs=s.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean);
   lines.push('',`${tr.documentation}: ${docs.join('; ')||tr.noSelection}`);
@@ -262,6 +273,7 @@ function drawRichText(ctx,text,x,y,maxWidth,lineHeight,basePt,family,color){
 
 function drawPageFrame(ctx,w,h,tr,snapshot,title,logoImage,left=44,right=44){
   const th=activeTheme;
+  const date=formatDate(snapshot.date,snapshot.lang);
   ctx.fillStyle=th.white;ctx.fillRect(0,0,w,h);ctx.strokeStyle=th.frame;ctx.lineWidth=th.frameWidth*2;ctx.strokeRect(2,2,w-4,h-4);
   if(th===themes.chair){
     const r=w*.215/16, barX=10*r, barW=(w-barX)/2;
@@ -270,10 +282,10 @@ function drawPageFrame(ctx,w,h,tr,snapshot,title,logoImage,left=44,right=44){
     ctx.textAlign='right';ctx.fillStyle=th.ink;ctx.font=`700 14px ${th.fontCanvas}`;ctx.fillText(snapshot.lecturer,w-3*r,3.95*r);ctx.font=`700 11px ${th.fontCanvas}`;ctx.fillText(tr.subtitle.toUpperCase(),w-3*r,4.62*r);ctx.textAlign='left';
     ctx.fillStyle=th.accentDark;ctx.font=`700 17px ${th.fontCanvas}`;ctx.fillText(tr.formTitle.toUpperCase(),barX,146);
     ctx.fillStyle='#595958';ctx.font=`700 42px ${th.fontCanvas}`;ctx.fillText(title.slice(0,45),barX,194);
-    ctx.textAlign='right';ctx.fillStyle=th.muted;ctx.font=`18px ${th.fontCanvas}`;ctx.fillText(snapshot.semester,w-3*r,132);ctx.fillText(snapshot.date,w-3*r,158);ctx.textAlign='left';
+    ctx.textAlign='right';ctx.fillStyle=th.muted;ctx.font=`18px ${th.fontCanvas}`;ctx.fillText(snapshot.semester,w-3*r,132);ctx.fillText(date,w-3*r,158);ctx.textAlign='left';
   } else {
     ctx.fillStyle=th.accent;ctx.font=`700 22px ${th.fontCanvas}`;ctx.fillText(tr.formTitle.toUpperCase(),left,80);ctx.fillStyle=th.ink;ctx.font=`800 52px ${th.fontCanvas}`;ctx.fillText(title.slice(0,45),left,145);
-    ctx.textAlign='right';ctx.fillStyle=th.muted;ctx.font=`24px ${th.fontCanvas}`;ctx.fillText(snapshot.lecturer,w-right,75);ctx.fillText(snapshot.semester,w-right,110);ctx.fillText(snapshot.date,w-right,145);ctx.textAlign='left';ctx.fillStyle=th.accent;ctx.fillRect(left,175,w-left-right,5);
+    ctx.textAlign='right';ctx.fillStyle=th.muted;ctx.font=`24px ${th.fontCanvas}`;ctx.fillText(snapshot.lecturer,w-right,75);ctx.fillText(snapshot.semester,w-right,110);ctx.fillText(date,w-right,145);ctx.textAlign='left';ctx.fillStyle=th.accent;ctx.fillRect(left,175,w-left-right,5);
   }
 }
 
@@ -404,7 +416,7 @@ function addDetailSlide(pres,tr,s,date,total){
 
 document.querySelector('#pptx-button').addEventListener('click',()=>{
   const tr=strings(snapshot.lang);
-  const date=snapshot.date?new Intl.DateTimeFormat(snapshot.lang==='de'?'de-DE':'en-GB').format(new Date(`${snapshot.date}T12:00:00`)):'';
+  const date=formatDate(snapshot.date,snapshot.lang);
   const total=hasDetails(snapshot)?2:1;
   const pres=new PptxGenJS();
   pres.defineLayout({name:'KIB169',width:10,height:5.625});
