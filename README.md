@@ -37,8 +37,8 @@ Im Repository muss unter **Settings → Pages → Build and deployment** einmali
 - umschaltbares Design: neutral (Standard, passt sich fremden Folienvorlagen an) oder CD (UR-Corporate-Design in Glutrot für den Lehrstuhl für Medieninformatik), wirkt auf die ganze Anwendung inkl. Export
 - granulare Ampelregeln für 12 Einsatzbereiche (immer sichtbar)
 - gegeneinander ausgeschlossene Basisoptionen für die Dokumentation
-- optionale zweite Seite mit Beispielen & Hinweisen, sobald eines der Felder ausgefüllt ist
-- Folienähnliche Ampel-Vorschau
+- optionale zweite Seite mit Beispielen & Hinweisen, sobald eines der Felder ausgefüllt ist, in drei festen Spalten (erlaubt / nicht erlaubt / weitere Hinweise); die Felder unterstützen ein kleines Markdown-Subset (`- `/`* ` für Aufzählungen, `**fett**`, `*kursiv*`), identisch dargestellt in Vorschau, PNG- und PPTX-Export
+- Folienähnliche Ampel-Vorschau im festen 16:9-Format (wie die Miniaturansicht einer PDF-Seite: die Vorschau verkleinert sich proportional statt das Format zu wechseln, auch auf schmalen Bildschirmen)
 - Live-Aktualisierung der Vorschau bei jeder Eingabe
 - kopierbare Textfassung
 - PNG-Download (eine Datei pro Seite)
