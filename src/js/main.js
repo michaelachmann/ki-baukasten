@@ -64,20 +64,20 @@ function font(th){ return th.fontPptx?{fontFace:th.fontPptx}:{}; }
 
 const translations = {
   de: {
-    formTitle:'KI-Nutzung im Kurs', intro:'Legen Sie verständliche Regeln für den Einsatz generativer KI fest.', meta:'Kursdaten', areasHeading:'Erlaubte Einsatzbereiche', areasHint:'Wählen Sie für jeden Bereich eine Ampelfarbe und ergänzen Sie bei Bedarf eine Bedingung.', docsHeading:'Dokumentation', notesHeading:'Beispiele & Hinweise', notesOptional:'Optional – nur bei zusätzlichem Erklärungsbedarf', preview:'Vorschau', ready:'Fertig für Ihre Folien', reset:'Zurücksetzen', generate:'Vorschau bestätigen', live:'Live-Vorschau aktiv', updated:'Vorschau ist aktuell', download:'PNG herunterladen', pptx:'PPTX herunterladen', copy:'Text kopieren', copied:'Text kopiert', imageReady:'PNG wurde erstellt', pptxReady:'PPTX wurde erstellt', visual:'Ampel', text:'Text', pageLabel:'Seite',
+    formTitle:'KI-Nutzung im Kurs', intro:'Legen Sie verständliche Regeln für den Einsatz generativer KI fest.', meta:'Kursdaten', areasHeading:'Erlaubte Einsatzbereiche', areasHint:'Wählen Sie für jeden Bereich eine Ampelfarbe und ergänzen Sie bei Bedarf eine Bedingung.', docsRequirementHeading:'Dokumentationspflicht', docsProofHeading:'Nachweisform', notesHeading:'Beispiele & Hinweise', notesOptional:'Optional – nur bei zusätzlichem Erklärungsbedarf', preview:'Vorschau', ready:'Fertig für Ihre Folien', reset:'Zurücksetzen', generate:'Vorschau bestätigen', live:'Live-Vorschau aktiv', updated:'Vorschau ist aktuell', download:'PNG herunterladen', pptx:'PPTX herunterladen', copy:'Text kopieren', copied:'Text kopiert', imageReady:'PNG wurde erstellt', pptxReady:'PPTX wurde erstellt', visual:'Ampel', text:'Text', pageLabel:'Seite',
     fields:{course:'Kurs / Modul',lecturer:'Dozent/in',semester:'Semester',date:'Stand',allowedExamples:'Beispiele erlaubter Nutzung',forbiddenExamples:'Beispiele nicht erlaubter Nutzung',notes:'Weitere Hinweise'},
     status:{allow:'Erlaubt',limit:'Eingeschränkt',deny:'Nicht erlaubt'},
     areas:['Recherche & Literaturarbeit','Texte lesen, verstehen & zusammenfassen','Brainstorming & Ideensammlung','Sprachliche Überarbeitung','Lernunterstützung & Prüfungsvorbereitung','Textgenerierung (Abschnitte / Kapitel)','Programmierung: Erklärung & Fehlersuche','Programmierung: wesentliche Lösungsteile','Studien- & Forschungsdesign','Datenanalyse & -interpretation','Bildgenerierung','Präsentationserstellung'],
     docs:['Standardanforderung laut Richtlinie','Kurzer Nutzungshinweis genügt','Keine Dokumentation erforderlich','Konkrete Prompts beifügen','Chatverläufe beifügen','Kurze Reflexion über den KI-Einsatz'],
-    notePlaceholder:'Bedingung / Anmerkung (optional)', documentation:'Dokumentation', examplesAllowed:'Beispiele erlaubter Nutzung', examplesDenied:'Beispiele nicht erlaubter Nutzung', moreNotes:'Weitere Hinweise', noSelection:'Keine Angabe'
+    notePlaceholder:'Bedingung / Anmerkung (optional)', documentation:'Dokumentation', examplesAllowed:'Beispiele erlaubter Nutzung', examplesDenied:'Beispiele nicht erlaubter Nutzung', moreNotes:'Weitere Hinweise', guidelinesNotice:'Siehe KI-Nutzungsrichtlinien'
   },
   en: {
-    formTitle:'AI use in this course', intro:'Define clear rules for the use of generative AI.', meta:'Course details', areasHeading:'Permitted areas of use', areasHint:'Choose a signal for each area and add a condition if needed.', docsHeading:'Documentation', notesHeading:'Examples & notes', notesOptional:'Optional – only when additional explanation is useful', preview:'Preview', ready:'Ready for your slides', reset:'Reset', generate:'Confirm preview', live:'Live preview active', updated:'Preview is up to date', download:'Download PNG', pptx:'Download PPTX', copy:'Copy text', copied:'Text copied', imageReady:'PNG created', pptxReady:'PPTX created', visual:'Signal', text:'Text', pageLabel:'Page',
+    formTitle:'AI use in this course', intro:'Define clear rules for the use of generative AI.', meta:'Course details', areasHeading:'Permitted areas of use', areasHint:'Choose a signal for each area and add a condition if needed.', docsRequirementHeading:'Documentation requirement', docsProofHeading:'Form of evidence', notesHeading:'Examples & notes', notesOptional:'Optional – only when additional explanation is useful', preview:'Preview', ready:'Ready for your slides', reset:'Reset', generate:'Confirm preview', live:'Live preview active', updated:'Preview is up to date', download:'Download PNG', pptx:'Download PPTX', copy:'Copy text', copied:'Text copied', imageReady:'PNG created', pptxReady:'PPTX created', visual:'Signal', text:'Text', pageLabel:'Page',
     fields:{course:'Course / module',lecturer:'Lecturer',semester:'Semester',date:'Valid as of',allowedExamples:'Examples of permitted use',forbiddenExamples:'Examples of non-permitted use',notes:'Additional notes'},
     status:{allow:'Allowed',limit:'Restricted',deny:'Not allowed'},
     areas:['Research & literature work','Reading, understanding & summarising','Brainstorming & idea generation','Language editing & proofreading','Learning support & exam preparation','Text generation (sections / chapters)','Programming: explanation & debugging','Programming: substantial solution parts','Study & research design','Data analysis & interpretation','Image generation','Presentation creation'],
     docs:['Standard policy requirements','A short usage note suffices','No documentation required','Attach concrete prompts','Attach chat logs','Short reflection on AI use'],
-    notePlaceholder:'Condition / note (optional)', documentation:'Documentation', examplesAllowed:'Examples of permitted use', examplesDenied:'Examples of non-permitted use', moreNotes:'Additional notes', noSelection:'Not specified'
+    notePlaceholder:'Condition / note (optional)', documentation:'Documentation', examplesAllowed:'Examples of permitted use', examplesDenied:'Examples of non-permitted use', moreNotes:'Additional notes', guidelinesNotice:'See AI usage guidelines'
   }
 };
 
@@ -96,6 +96,7 @@ function cssStatus(status){ const s=statuses[status]; return `--status-color:${s
 function hasDetails(s){ return !!(s.allowedExamples.trim()||s.forbiddenExamples.trim()||s.notes.trim()); }
 function slugCourse(course){ return course.replace(/[^a-z0-9]+/gi,'-')||'Kurs'; }
 const logoUrl=`${import.meta.env.BASE_URL}assets/images/UR-Logo-Bildmarke-RGB.png`;
+const guidelinesUrl='https://www.uni-regensburg.de/informatik-data-science/fakultaet/einrichtungen/medieninformatik/studium/ki-richtlinien';
 
 function renderFormControls(){
   const tr=t();
@@ -106,7 +107,8 @@ function renderFormControls(){
   document.querySelector('#meta-heading').textContent=tr.meta;
   document.querySelector('#areas-heading').textContent=tr.areasHeading;
   document.querySelector('#areas-hint').textContent=tr.areasHint;
-  document.querySelector('#docs-heading').textContent=tr.docsHeading;
+  document.querySelector('#docs-requirement-heading').textContent=tr.docsRequirementHeading;
+  document.querySelector('#docs-proof-heading').textContent=tr.docsProofHeading;
   document.querySelector('#notes-heading').textContent=tr.notesHeading;
   document.querySelector('#notes-optional').textContent=tr.notesOptional;
   document.querySelector('#preview-eyebrow').textContent=tr.preview;
@@ -122,8 +124,13 @@ function renderFormControls(){
   document.querySelector('[data-tab="visual"]').textContent=tr.visual;
   document.querySelector('[data-tab="text"]').textContent=tr.text;
 
-  document.querySelector('#area-options').innerHTML=tr.areas.map((name,i)=>`<div class="area-row"><span class="area-name">${name}</span><div class="status-picker" aria-label="${name}">${['allow','limit','deny'].map(status=>`<button type="button" class="status-button ${state.areas[i].status===status?'active':''}" data-area="${i}" data-status="${status}" title="${tr.status[status]}" style="${cssStatus(status)}">${statuses[status].glyph}</button>`).join('')}</div><input class="area-note" data-note="${i}" value="${escapeHtml(state.areas[i].note)}" placeholder="${tr.notePlaceholder}"></div>`).join('');
-  document.querySelector('#documentation-options').innerHTML=tr.docs.map((label,i)=>`<label class="check-option ${state.docs[2]&&i>2?'disabled':''}"><input type="checkbox" data-doc="${i}" ${state.docs[i]?'checked':''} ${state.docs[2]&&i>2?'disabled':''}><span>${label}</span></label>`).join('');
+  document.querySelector('#area-options').innerHTML=tr.areas.map((name,i)=>{
+    const a=state.areas[i];
+    const noteField=a.status==='limit'?`<input class="area-note" data-note="${i}" value="${escapeHtml(a.note)}" placeholder="${tr.notePlaceholder}">`:'';
+    return `<div class="area-row"><span class="area-name">${name}</span><div class="status-picker" aria-label="${name}">${['allow','limit','deny'].map(status=>`<button type="button" class="status-button ${a.status===status?'active':''}" data-area="${i}" data-status="${status}" title="${tr.status[status]}" style="${cssStatus(status)}">${statuses[status].glyph}</button>`).join('')}</div>${noteField}</div>`;
+  }).join('');
+  document.querySelector('#documentation-requirement-options').innerHTML=tr.docs.slice(0,3).map((label,i)=>`<label class="check-option"><input type="checkbox" data-doc="${i}" ${state.docs[i]?'checked':''}><span>${label}</span></label>`).join('');
+  document.querySelector('#documentation-proof-options').innerHTML=tr.docs.slice(3).map((label,j)=>{const i=j+3;return `<label class="check-option ${state.docs[2]?'disabled':''}"><input type="checkbox" data-doc="${i}" ${state.docs[i]?'checked':''} ${state.docs[2]?'disabled':''}><span>${label}</span></label>`}).join('');
 }
 
 function escapeHtml(value=''){ return value.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -181,7 +188,7 @@ function renderOutput(){
   const total=hasDetails(s)?2:1;
   const grid=`<div class="policy-grid">${tr.areas.map((name,i)=>{const a=s.areas[i],x=statuses[a.status];return `<div class="policy-row"><span class="policy-row-copy"><span>${name}</span>${a.note?`<span class="policy-row-note">${escapeHtml(a.note)}</span>`:''}</span><span class="policy-status" style="${cssStatus(a.status)}">${x.glyph}</span></div>`}).join('')}</div>`;
   const selectedDocs=s.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean);
-  const docsMarkup=selectedDocs.length?selectedDocs.map(label=>`<span class="doc-chip">✓ ${label}</span>`).join(''):`<span class="doc-chip muted">${tr.noSelection}</span>`;
+  const docsMarkup=selectedDocs.length?selectedDocs.map(label=>`<span class="doc-chip">✓ ${label}</span>`).join(''):`<a class="doc-chip link" href="${guidelinesUrl}" target="_blank" rel="noopener">${tr.guidelinesNotice}</a>`;
   document.querySelector('#policy-card').innerHTML=`${cardHeader(tr,s,date,s.course)}<div class="policy-body">${grid}</div><div class="documentation-strip"><strong>${tr.documentation}</strong><div>${docsMarkup}</div></div><footer class="card-footer"><div class="legend">${['allow','limit','deny'].map(k=>`<span class="legend-item"><span class="legend-dot" style="background:${statuses[k].color}">${statuses[k].glyph}</span>${tr.status[k]}</span>`).join('')}</div>${pageMarker(tr,1,total)}<span class="footer-note">${tr.footer}</span></footer>`;
 
   const card2=document.querySelector('#policy-card-2');
@@ -201,7 +208,7 @@ function buildText(s){
   const tr=translations[s.lang], date=formatDate(s.date,s.lang), lines=[`${tr.formTitle}: ${s.course}`,`${tr.fields.lecturer}: ${s.lecturer}`,`${tr.fields.semester}: ${s.semester}`,`${tr.fields.date}: ${date}`,'',tr.areasHeading];
   tr.areas.forEach((name,i)=>lines.push(`- ${statuses[s.areas[i].status].glyph} ${name}: ${tr.status[s.areas[i].status]}${s.areas[i].note?` — ${s.areas[i].note}`:''}`));
   const docs=s.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean);
-  lines.push('',`${tr.documentation}: ${docs.join('; ')||tr.noSelection}`);
+  lines.push('',`${tr.documentation}: ${docs.length?docs.join('; '):`${tr.guidelinesNotice} (${guidelinesUrl})`}`);
   [[tr.examplesAllowed,s.allowedExamples],[tr.examplesDenied,s.forbiddenExamples],[tr.moreNotes,s.notes]].forEach(([label,value])=>{if(value.trim())lines.push('',`${label}:`,value.trim())});
   return lines.join('\n');
 }
@@ -218,7 +225,7 @@ function showToast(message){ const el=document.querySelector('#toast');el.textCo
 
 document.addEventListener('click',e=>{
   const status=e.target.closest('[data-status]');
-  if(status){ state.areas[+status.dataset.area].status=status.dataset.status; renderFormControls(); updateLive(); }
+  if(status){ const idx=+status.dataset.area; state.areas[idx].status=status.dataset.status; if(state.areas[idx].status!=='limit') state.areas[idx].note=''; renderFormControls(); updateLive(); }
   const lang=e.target.closest('[data-lang]');
   if(lang){ state.lang=lang.dataset.lang; renderFormControls(); snapshot=getFormData();renderOutput(); }
   const theme=e.target.closest('button[data-theme]');
@@ -329,7 +336,7 @@ function drawPage1(snapshot,tr,logoImage){
     ctx.fillText(s.glyph,x+colW-22,y+29);
     ctx.textAlign='left';
   });
-  const pngDocs=snapshot.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean).join(' · ')||tr.noSelection;
+  const pngDocs=snapshot.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean).join(' · ')||`${tr.guidelinesNotice}: ${guidelinesUrl}`;
   const contentW=w-left-right;
   ctx.fillStyle=th.soft;
   ctx.fillRect(left,710,contentW,72);
@@ -454,10 +461,14 @@ function addPolicySlide(pres,tr,s,date,total){
     });
     slide.addTable(rows,{x:left+c*(colW+gap),y:cd?1.65:1.15,w:colW,colW:[colW-.55,.55],border:{type:'solid',color:hex(th.line),pt:0.5},autoPage:false});
   });
-  const docs=s.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean).join(' · ')||tr.noSelection;
+  const docsSelected=s.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean);
   const contentW=10-left-right;slide.addShape('rect',{x:left,y:4.55,w:contentW,h:0.6,fill:{color:hex(th.soft)},line:{type:'none'}});
   slide.addText(tr.documentation.toUpperCase(),{x:left+.15,y:4.6,w:contentW-.3,h:0.22,fontSize:9,bold:true,color:hex(th.ink),...font(th)});
-  slide.addText(docs,{x:left+.15,y:4.83,w:contentW-.3,h:0.28,fontSize:9,color:hex(th.ink),...font(th)});
+  if(docsSelected.length){
+    slide.addText(docsSelected.join(' · '),{x:left+.15,y:4.83,w:contentW-.3,h:0.28,fontSize:9,color:hex(th.ink),...font(th)});
+  } else {
+    slide.addText([{text:tr.guidelinesNotice,options:{hyperlink:{url:guidelinesUrl},color:hex(th.accent),fontSize:9,...font(th)}}],{x:left+.15,y:4.83,w:contentW-.3,h:0.28});
+  }
   const legend=['allow','limit','deny'].map(k=>`${statuses[k].glyph} ${tr.status[k]}`).join('     ');
   slide.addText(legend,{x:left,y:5.38,w:5,h:0.22,fontSize:8,color:hex(th.muted),...font(th)});
   addSlideFooter(slide,tr,1,total);

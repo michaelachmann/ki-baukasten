@@ -109,6 +109,8 @@ pre { margin: 0; background: white; border: var(--frame-width) solid var(--frame
 .documentation-strip > div { display: flex; flex-wrap: wrap; gap: calc(4 * var(--px)); }
 .doc-chip { padding: calc(2 * var(--px)) calc(5 * var(--px)); background: white; border: 1px solid var(--line); font-size: calc(8 * var(--px)); line-height: 1.2; }
 .doc-chip.muted { color: var(--muted); }
+.doc-chip.link { color: var(--accent-dark); text-decoration: underline; }
+.doc-chip.link:hover { color: var(--ink); }
 .optional-section { border-top: var(--frame-width) solid var(--frame); padding: 0 0 28px; }
 .optional-section summary { display: flex; align-items: center; gap: 12px; padding: 21px 0; cursor: pointer; list-style: none; }
 .optional-section summary::-webkit-details-marker { display: none; }
