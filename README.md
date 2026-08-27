@@ -44,4 +44,4 @@ Im Repository muss unter **Settings → Pages → Build and deployment** einmali
 - PNG-Download (eine Datei pro Seite)
 - PPTX-Download als editierbare PowerPoint-Folie(n)
 
-Die Anwendung verwendet Vite mit dem Einstiegspunkt `src/main.js`; das Produktions-Bundle wird nach `dist/` geschrieben und bleibt vollständig statisch.
+Die Anwendung verwendet Vite mit `src/index.html` als Einstiegspunkt. JavaScript und CSS liegen getrennt unter `src/js/` und `src/css/`, statische Dateien unter `public/assets/`. Das Produktions-Bundle wird nach `dist/` geschrieben und bleibt vollständig statisch.

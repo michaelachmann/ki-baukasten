@@ -2,7 +2,7 @@ import js from '@eslint/js';
 
 export default [
   {
-    ignores: ['dist/**', 'public/vendor/**'],
+    ignores: ['dist/**', 'public/assets/vendor/**'],
   },
   {
     files: ['src/**/*.js', '*.config.js'],
