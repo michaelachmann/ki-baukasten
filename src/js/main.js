@@ -127,6 +127,36 @@ function renderFormControls(){
 }
 
 function escapeHtml(value=''){ return value.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+// Small shared markdown subset: bullet lines ("- "/"* ") plus inline **bold**/*italic*.
+// Used by the live preview, the PNG canvas export and the PPTX export so all three stay in sync.
+function parseInlineRuns(text){
+  const runs=[]; const re=/\*\*(.+?)\*\*|\*(.+?)\*/g; let last=0,m;
+  while((m=re.exec(text))){
+    if(m.index>last) runs.push({text:text.slice(last,m.index)});
+    runs.push(m[1]!==undefined?{text:m[1],bold:true}:{text:m[2],italic:true});
+    last=re.lastIndex;
+  }
+  if(last<text.length) runs.push({text:text.slice(last)});
+  return runs.length?runs:[{text}];
+}
+function parseMarkdown(text){
+  return text.split('\n').map(line=>line.trim()).filter(Boolean).map(line=>{
+    const bullet=/^[-*]\s+/.test(line);
+    return {type:bullet?'bullet':'para',runs:parseInlineRuns(bullet?line.replace(/^[-*]\s+/,''):line)};
+  });
+}
+function runsToHtml(runs){
+  return runs.map(r=>{let s=escapeHtml(r.text); if(r.bold) s=`<strong>${s}</strong>`; if(r.italic) s=`<em>${s}</em>`; return s;}).join('');
+}
+function markdownToHtml(text){
+  const blocks=parseMarkdown(text); let html='',i=0;
+  while(i<blocks.length){
+    if(blocks[i].type==='bullet'){ let items=''; while(i<blocks.length&&blocks[i].type==='bullet'){ items+=`<li>${runsToHtml(blocks[i].runs)}</li>`; i++; } html+=`<ul>${items}</ul>`; }
+    else { html+=`<p>${runsToHtml(blocks[i].runs)}</p>`; i++; }
+  }
+  return html;
+}
 function getFormData(){ const data=new FormData(form); return {course:data.get('course')||'',lecturer:data.get('lecturer')||'',semester:data.get('semester')||'',date:data.get('date')||'',allowedExamples:data.get('allowedExamples')||'',forbiddenExamples:data.get('forbiddenExamples')||'',notes:data.get('notes')||'',lang:state.lang,areas:structuredClone(state.areas),docs:[...state.docs]}; }
 
 function cardHeader(tr,s,date,title){
@@ -145,7 +175,7 @@ function renderOutput(){
 
   const card2=document.querySelector('#policy-card-2');
   if(total>1){
-    const blocks=[[tr.examplesAllowed,s.allowedExamples],[tr.examplesDenied,s.forbiddenExamples],[tr.moreNotes,s.notes]].filter(([,v])=>v.trim()).map(([label,value])=>`<div class="detail-block"><strong>${label}</strong><p>${escapeHtml(value)}</p></div>`).join('');
+    const blocks=[[tr.examplesAllowed,s.allowedExamples],[tr.examplesDenied,s.forbiddenExamples],[tr.moreNotes,s.notes]].map(([label,value])=>`<div class="detail-block"><strong>${label}</strong><div class="detail-body-text">${value.trim()?markdownToHtml(value):''}</div></div>`).join('');
     card2.innerHTML=`${cardHeader(tr,s,date,tr.notesHeading)}<div class="policy-body detail-body">${blocks}</div><footer class="card-footer">${pageMarker(tr,2,total)}<span class="footer-note">${tr.footer}</span></footer>`;
     card2.hidden=false;
   } else {
