@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KI-Baukasten</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <strong>KI-Baukasten</strong>
+      <span id="brand-subtitle">Lehrstuhl Medieninformatik</span>
+    </div>
+    <div class="topbar-actions">
+      <div class="theme-switch language-switch" id="theme-switch" aria-label="Design"></div>
+      <div class="language-switch" aria-label="Sprache">
+        <button type="button" data-lang="de" class="active">DE</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <button type="button" class="button secondary" id="reset-button">Zurücksetzen</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <form id="builder-form" class="builder">
+      <div class="builder-intro">
+        <p class="eyebrow">Konfiguration</p>
+        <h1 id="form-title">KI-Nutzung im Kurs</h1>
+        <p id="form-intro">Legen Sie verständliche Regeln für den Einsatz generativer KI fest.</p>
+      </div>
+
+      <section>
+        <div class="section-heading"><span>01</span><h2 id="meta-heading">Kursdaten</h2></div>
+        <div class="field-grid">
+          <label><span data-label="course">Kurs / Modul</span><input name="course" value="Usability Engineering"></label>
+          <label><span data-label="lecturer">Dozent/in</span><input name="lecturer" value="Prof. Dr. M. Musterfrau"></label>
+          <label><span data-label="semester">Semester</span><input name="semester" value="Wintersemester 2026/27"></label>
+          <label><span data-label="date">Stand</span><input name="date" type="date" value="2026-08-11"></label>
+        </div>
+      </section>
+
+      <section id="areas-section">
+        <div class="section-heading"><span>02</span><h2 id="areas-heading">Erlaubte Einsatzbereiche</h2></div>
+        <p class="hint" id="areas-hint">Wählen Sie für jeden Bereich eine Ampelfarbe und ergänzen Sie bei Bedarf eine Bedingung.</p>
+        <div id="area-options" class="areas"></div>
+      </section>
+
+      <section>
+        <div class="section-heading"><span>03</span><h2 id="docs-heading">Dokumentation</h2></div>
+        <div id="documentation-options" class="check-stack"></div>
+      </section>
+
+      <details class="optional-section" id="notes-section">
+        <summary>
+          <span class="optional-number">04</span>
+          <span><strong id="notes-heading">Beispiele & Hinweise</strong><small id="notes-optional">Optional – nur bei zusätzlichem Erklärungsbedarf</small></span>
+        </summary>
+        <div class="optional-content">
+          <label><span data-label="allowedExamples">Beispiele erlaubter Nutzung</span><textarea name="allowedExamples" placeholder="z. B. …"></textarea></label>
+          <label><span data-label="forbiddenExamples">Beispiele nicht erlaubter Nutzung</span><textarea name="forbiddenExamples" placeholder="z. B. …"></textarea></label>
+          <label><span data-label="notes">Weitere Hinweise</span><textarea name="notes" placeholder="z. B. …"></textarea></label>
+        </div>
+      </details>
+
+      <div class="generate-row">
+        <button class="button primary" type="submit" id="generate-button">Ausgabe aktualisieren</button>
+        <span class="live-indicator"><i></i><span id="dirty-note" aria-live="polite">Live-Vorschau aktiv</span></span>
+      </div>
+    </form>
+
+    <aside class="output-panel">
+      <div class="output-toolbar">
+        <div>
+          <p class="eyebrow" id="preview-eyebrow">Vorschau</p>
+          <h2 id="preview-title">Fertig für Ihre Folien</h2>
+        </div>
+        <div class="tabs" role="tablist">
+          <button type="button" role="tab" data-tab="visual" class="active">Ampel</button>
+          <button type="button" role="tab" data-tab="text">Text</button>
+        </div>
+      </div>
+
+      <div id="visual-pane" class="tab-pane active">
+        <article id="policy-card" class="policy-card"></article>
+        <article id="policy-card-2" class="policy-card" hidden></article>
+        <div class="export-actions">
+          <button type="button" class="button secondary" id="png-button">PNG herunterladen</button>
+          <button type="button" class="button secondary" id="pptx-button">PPTX herunterladen</button>
+          <button type="button" class="button secondary" id="copy-text-button">Text kopieren</button>
+        </div>
+      </div>
+      <div id="text-pane" class="tab-pane">
+        <pre id="text-output"></pre>
+        <button type="button" class="button primary" id="copy-text-button-alt">Text kopieren</button>
+      </div>
+      <p class="toast" id="toast" role="status" aria-live="polite"></p>
+    </aside>
+  </main>
+  <script src="vendor/pptxgen.bundle.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
