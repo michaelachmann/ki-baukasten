@@ -11,6 +11,7 @@ export default [
       globals: {
         Blob: 'readonly',
         clearTimeout: 'readonly',
+        console: 'readonly',
         document: 'readonly',
         FormData: 'readonly',
         Intl: 'readonly',
