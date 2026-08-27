@@ -441,8 +441,14 @@ function addPolicySlide(pres,tr,s,date,total){
   columns.forEach((col,c)=>{
     const rows=col.map((a,i)=>{
       const st=statuses[a.status];
+      const cellText=a.note&&a.note.trim()
+        ?[
+          {text:names[c][i],options:{fontSize:8.5,color:hex(th.ink),breakLine:true,...font(th)}},
+          {text:a.note.trim(),options:{fontSize:7,color:hex(th.muted),...font(th)}}
+        ]
+        :names[c][i];
       return [
-        {text:a.note?`${names[c][i]}\n${a.note}`:names[c][i],options:{fontSize:9,color:hex(th.ink),valign:'middle',...font(th)}},
+        {text:cellText,options:{fontSize:9,color:hex(th.ink),valign:'middle',...font(th)}},
         {text:st.glyph,options:{fontSize:12,bold:true,align:'center',valign:'middle',fill:{color:hex(st.color)},color:hex(st.fg),...font(th)}}
       ];
     });
