@@ -180,7 +180,7 @@ document.addEventListener('click',e=>{
   if(status){ state.areas[+status.dataset.area].status=status.dataset.status; renderFormControls(); updateLive(); }
   const lang=e.target.closest('[data-lang]');
   if(lang){ state.lang=lang.dataset.lang; renderFormControls(); snapshot=getFormData();renderOutput(); }
-  const theme=e.target.closest('[data-theme]');
+  const theme=e.target.closest('button[data-theme]');
   if(theme){ state.theme=theme.dataset.theme; applyTheme(state.theme); }
   const tab=e.target.closest('[data-tab]');
   if(tab){ document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===tab));document.querySelectorAll('.tab-pane').forEach(x=>x.classList.toggle('active',x.id===`${tab.dataset.tab}-pane`)); }
