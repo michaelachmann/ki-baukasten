@@ -8,7 +8,7 @@ const themes = {
     fontPptx:null,
     ink:'#1f2124', muted:'#6b7075', line:'#d5d8dc', soft:'#f2f3f5',
     paper:'#f6f7f8', white:'#ffffff',
-    accent:'#4a5157',
+    accent:'#4a5157', accentDark:'#444444',
     frame:'#d5d8dc', frameWidth:1, ruleWidth:2,
     statuses:{ allow:{glyph:'✓',color:'#2f7d4f',fg:'#ffffff'},
                limit:{glyph:'!',color:'#b8860b',fg:'#1f2124'},
@@ -18,18 +18,18 @@ const themes = {
   },
   chair: {
     label:{de:'CD',en:'CD'},
-    fontUi:"Archivo,system-ui,sans-serif",
-    fontCanvas:"Archivo, Arial",
-    fontPptx:'Archivo',
-    ink:'#201e1d', muted:'#716d6b', line:'#cdc7c4', soft:'#ebe7e4',
-    paper:'#f4f1ef', white:'#fff',
-    accent:'#e83b1f',
-    frame:'#201e1d', frameWidth:2, ruleWidth:4,
+    fontUi:'"Helvetica Neue",Helvetica,Arial,sans-serif',
+    fontCanvas:'Helvetica, Arial, sans-serif',
+    fontPptx:'Helvetica',
+    ink:'#000000', muted:'#444444', line:'#8e8e8d', soft:'#f2f2f2',
+    paper:'#f3f3f3', white:'#ffffff',
+    accent:'#DA3C43', accentDark:'#BA3339',
+    frame:'#8e8e8d', frameWidth:1, ruleWidth:1,
     statuses:{ allow:{glyph:'✓',color:'#19733b',fg:'#fff'},
                limit:{glyph:'!',color:'#d99800',fg:'#201e1d'},
                deny:{glyph:'×',color:'#c93320',fg:'#fff'} },
-    strings:{ de:{subtitle:'Lehrstuhl Medieninformatik', footer:'Konkretisiert die allgemeine KI-Richtlinie des Lehrstuhls Medieninformatik.'},
-              en:{subtitle:'Chair of Media Informatics', footer:'Specifies the general AI policy of the Chair of Media Informatics.'} }
+    strings:{ de:{subtitle:'Lehrstuhl für Medieninformatik', footer:'Lehrstuhl für Medieninformatik · Universität Regensburg'},
+              en:{subtitle:'Chair of Media Informatics', footer:'Chair of Media Informatics · Universität Regensburg'} }
   }
 };
 let activeTheme = themes.neutral;
@@ -46,6 +46,7 @@ function applyTheme(id){
   root.setProperty('--line',th.line);
   root.setProperty('--soft',th.soft);
   root.setProperty('--accent',th.accent);
+  root.setProperty('--accent-dark',th.accentDark);
   root.setProperty('--font',th.fontUi);
   root.setProperty('--frame',th.frame);
   root.setProperty('--frame-width',`${th.frameWidth}px`);
@@ -53,6 +54,7 @@ function applyTheme(id){
   root.setProperty('--green',th.statuses.allow.color);
   root.setProperty('--amber',th.statuses.limit.color);
   root.setProperty('--red',th.statuses.deny.color);
+  document.documentElement.dataset.theme=id;
   renderFormControls();
   snapshot=getFormData();
   renderOutput();
@@ -93,6 +95,7 @@ function t(){ return strings(state.lang); }
 function cssStatus(status){ const s=statuses[status]; return `--status-color:${s.color};--status-fg:${s.fg}`; }
 function hasDetails(s){ return !!(s.allowedExamples.trim()||s.forbiddenExamples.trim()||s.notes.trim()); }
 function slugCourse(course){ return course.replace(/[^a-z0-9]+/gi,'-')||'Kurs'; }
+const logoUrl=`${import.meta.env.BASE_URL}assets/images/UR-Logo-Bildmarke-RGB.png`;
 
 function renderFormControls(){
   const tr=t();
@@ -127,7 +130,7 @@ function escapeHtml(value=''){ return value.replace(/[&<>"]/g,c=>({'&':'&amp;','
 function getFormData(){ const data=new FormData(form); return {course:data.get('course')||'',lecturer:data.get('lecturer')||'',semester:data.get('semester')||'',date:data.get('date')||'',allowedExamples:data.get('allowedExamples')||'',forbiddenExamples:data.get('forbiddenExamples')||'',notes:data.get('notes')||'',lang:state.lang,areas:structuredClone(state.areas),docs:[...state.docs]}; }
 
 function cardHeader(tr,s,date,title){
-  return `<header class="card-header"><div><div class="card-kicker">${tr.formTitle}</div><h3 class="card-title">${escapeHtml(title)}</h3></div><div class="card-meta">${escapeHtml(s.lecturer)}<br>${escapeHtml(s.semester)}<br>${date}</div></header>`;
+  return `<div class="card-identity"><img class="card-logo" src="${logoUrl}" alt=""><span class="card-bars" aria-hidden="true"><i></i><i></i></span><span class="card-department"><strong>${escapeHtml(s.lecturer)}</strong><span>${escapeHtml(tr.subtitle)}</span></span></div><header class="card-header"><div><div class="card-kicker">${tr.formTitle}</div><h3 class="card-title">${escapeHtml(title)}</h3></div><div class="card-meta"><span class="meta-lecturer">${escapeHtml(s.lecturer)}<br></span>${escapeHtml(s.semester)}<br>${date}</div></header>`;
 }
 function pageMarker(tr,n,total){ return total>1?`<span class="page-marker">${tr.pageLabel} ${n}/${total}</span>`:''; }
 
@@ -214,34 +217,45 @@ function wrapText(ctx,text,x,y,maxWidth,lineHeight){
   return y;
 }
 
-function drawPageFrame(ctx,w,h,tr,snapshot,title){
+function drawPageFrame(ctx,w,h,tr,snapshot,title,logoImage){
   const th=activeTheme;
   ctx.fillStyle=th.white;ctx.fillRect(0,0,w,h);ctx.strokeStyle=th.frame;ctx.lineWidth=th.frameWidth*2;ctx.strokeRect(2,2,w-4,h-4);
-  ctx.fillStyle=th.accent;ctx.font=`700 22px ${th.fontCanvas}`;ctx.fillText(tr.formTitle.toUpperCase(),70,80);ctx.fillStyle=th.ink;ctx.font=`800 52px ${th.fontCanvas}`;ctx.fillText(title.slice(0,45),70,145);
-  ctx.textAlign='right';ctx.fillStyle=th.muted;ctx.font=`24px ${th.fontCanvas}`;ctx.fillText(snapshot.lecturer,1530,75);ctx.fillText(snapshot.semester,1530,110);ctx.fillText(snapshot.date,1530,145);ctx.textAlign='left';ctx.fillStyle=th.accent;ctx.fillRect(70,175,1460,5);
+  if(th===themes.chair){
+    const r=w*.215/16, barX=10*r, barW=(w-barX)/2;
+    ctx.fillStyle='#8E8E8D';ctx.fillRect(barX,0,barW,3*r);ctx.fillStyle=th.accent;ctx.fillRect(barX+barW,0,barW,3*r);
+    const logoH=4*r,logoW=logoH*(logoImage.naturalWidth/logoImage.naturalHeight);ctx.drawImage(logoImage,3*r,r,logoW,logoH);
+    ctx.textAlign='right';ctx.fillStyle=th.ink;ctx.font=`700 14px ${th.fontCanvas}`;ctx.fillText(snapshot.lecturer,w-3*r,3.95*r);ctx.font=`700 11px ${th.fontCanvas}`;ctx.fillText(tr.subtitle.toUpperCase(),w-3*r,4.62*r);ctx.textAlign='left';
+    ctx.fillStyle=th.accentDark;ctx.font=`700 17px ${th.fontCanvas}`;ctx.fillText(tr.formTitle.toUpperCase(),barX,146);
+    ctx.fillStyle='#595958';ctx.font=`700 42px ${th.fontCanvas}`;ctx.fillText(title.slice(0,45),barX,194);
+    ctx.textAlign='right';ctx.fillStyle=th.muted;ctx.font=`18px ${th.fontCanvas}`;ctx.fillText(snapshot.semester,w-3*r,132);ctx.fillText(snapshot.date,w-3*r,158);ctx.textAlign='left';
+  } else {
+    ctx.fillStyle=th.accent;ctx.font=`700 22px ${th.fontCanvas}`;ctx.fillText(tr.formTitle.toUpperCase(),70,80);ctx.fillStyle=th.ink;ctx.font=`800 52px ${th.fontCanvas}`;ctx.fillText(title.slice(0,45),70,145);
+    ctx.textAlign='right';ctx.fillStyle=th.muted;ctx.font=`24px ${th.fontCanvas}`;ctx.fillText(snapshot.lecturer,1530,75);ctx.fillText(snapshot.semester,1530,110);ctx.fillText(snapshot.date,1530,145);ctx.textAlign='left';ctx.fillStyle=th.accent;ctx.fillRect(70,175,1460,5);
+  }
 }
 
-function drawPage1(snapshot,tr){
+function drawPage1(snapshot,tr,logoImage){
   const th=activeTheme;
   const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d'),w=1600,h=900;canvas.width=w;canvas.height=h;
-  drawPageFrame(ctx,w,h,tr,snapshot,snapshot.course);
-  ctx.font=`600 19px ${th.fontCanvas}`;snapshot.areas.forEach((a,i)=>{const col=i<6?0:1,row=i%6,x=70+col*750,y=250+row*68,s=statuses[a.status];ctx.fillStyle=th.line;ctx.fillRect(x,y+39,680,1);ctx.fillStyle=th.ink;ctx.fillText(tr.areas[i].slice(0,50),x,y+27);ctx.fillStyle=s.color;ctx.fillRect(x+640,y+3,36,36);ctx.fillStyle=s.fg;ctx.textAlign='center';ctx.font=`800 22px ${th.fontCanvas}`;ctx.fillText(s.glyph,x+658,y+29);ctx.textAlign='left';ctx.font=`600 19px ${th.fontCanvas}`});
+  drawPageFrame(ctx,w,h,tr,snapshot,snapshot.course,logoImage);
+  const cd=th===themes.chair,r=w*.215/16,left=cd?10*r:70,right=cd?3*r:70,gap=cd?30:70,colW=(w-left-right-gap)/2,rowTop=cd?225:250;
+  ctx.font=`600 19px ${th.fontCanvas}`;snapshot.areas.forEach((a,i)=>{const col=i<6?0:1,row=i%6,x=left+col*(colW+gap),y=rowTop+row*68,s=statuses[a.status];ctx.fillStyle=th.line;ctx.fillRect(x,y+39,colW,1);ctx.fillStyle=th.ink;ctx.fillText(tr.areas[i].slice(0,50),x,y+27);ctx.fillStyle=s.color;ctx.fillRect(x+colW-40,y+3,36,36);ctx.fillStyle=s.fg;ctx.textAlign='center';ctx.font=`800 22px ${th.fontCanvas}`;ctx.fillText(s.glyph,x+colW-22,y+29);ctx.textAlign='left';ctx.font=`600 19px ${th.fontCanvas}`});
   const pngDocs=snapshot.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean).join(' · ')||tr.noSelection;
-  ctx.fillStyle=th.soft;ctx.fillRect(70,710,1460,72);ctx.fillStyle=th.ink;ctx.font=`800 17px ${th.fontCanvas}`;ctx.fillText(tr.documentation.toUpperCase(),90,740);ctx.font=`600 17px ${th.fontCanvas}`;ctx.fillText(pngDocs.slice(0,125),90,765);
-  ctx.fillStyle=th.ink;ctx.fillRect(70,805,1460,3);ctx.fillStyle=th.muted;ctx.font=`18px ${th.fontCanvas}`;ctx.fillText(`${statuses.allow.glyph} ${tr.status.allow}     ${statuses.limit.glyph} ${tr.status.limit}     ${statuses.deny.glyph} ${tr.status.deny}`,70,848);ctx.textAlign='right';ctx.fillText(tr.footer,1530,848);ctx.textAlign='left';
+  const contentW=w-left-right;ctx.fillStyle=th.soft;ctx.fillRect(left,710,contentW,72);ctx.fillStyle=th.ink;ctx.font=`800 17px ${th.fontCanvas}`;ctx.fillText(tr.documentation.toUpperCase(),left+20,740);ctx.font=`600 17px ${th.fontCanvas}`;ctx.fillText(pngDocs.slice(0,125),left+20,765);
+  ctx.fillStyle=th.ink;ctx.fillRect(left,805,contentW,3);ctx.fillStyle=th.muted;ctx.font=`18px ${th.fontCanvas}`;ctx.fillText(`${statuses.allow.glyph} ${tr.status.allow}     ${statuses.limit.glyph} ${tr.status.limit}     ${statuses.deny.glyph} ${tr.status.deny}`,left,848);ctx.textAlign='right';ctx.fillText(tr.footer,w-right,848);ctx.textAlign='left';
   return canvas;
 }
 
-function drawPage2(snapshot,tr){
+function drawPage2(snapshot,tr,logoImage){
   const th=activeTheme;
   const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d'),w=1600,h=900;canvas.width=w;canvas.height=h;
-  drawPageFrame(ctx,w,h,tr,snapshot,tr.notesHeading);
-  let y=250;
+  drawPageFrame(ctx,w,h,tr,snapshot,tr.notesHeading,logoImage);
+  const cd=th===themes.chair,r=w*.215/16,left=cd?10*r:70,right=cd?3*r:70;let y=cd?225:250;
   [[tr.examplesAllowed,snapshot.allowedExamples],[tr.examplesDenied,snapshot.forbiddenExamples],[tr.moreNotes,snapshot.notes]].filter(([,v])=>v.trim()).forEach(([label,value])=>{
-    ctx.fillStyle=th.accent;ctx.font=`800 20px ${th.fontCanvas}`;ctx.fillText(label.toUpperCase(),70,y);y+=34;
-    ctx.fillStyle=th.ink;ctx.font=`600 20px ${th.fontCanvas}`;y=wrapText(ctx,value.trim(),70,y,1460,28);y+=30;
+    ctx.fillStyle=th.accent;ctx.font=`800 20px ${th.fontCanvas}`;ctx.fillText(label.toUpperCase(),left,y);y+=34;
+    ctx.fillStyle=th.ink;ctx.font=`600 20px ${th.fontCanvas}`;y=wrapText(ctx,value.trim(),left,y,w-left-right,28);y+=30;
   });
-  ctx.fillStyle=th.ink;ctx.fillRect(70,805,1460,3);ctx.fillStyle=th.muted;ctx.font=`18px ${th.fontCanvas}`;ctx.textAlign='right';ctx.fillText(tr.footer,1530,848);ctx.textAlign='left';
+  ctx.fillStyle=th.ink;ctx.fillRect(left,805,w-left-right,3);ctx.fillStyle=th.muted;ctx.font=`18px ${th.fontCanvas}`;ctx.textAlign='right';ctx.fillText(tr.footer,w-right,848);ctx.textAlign='left';
   return canvas;
 }
 
@@ -249,10 +263,12 @@ function downloadCanvas(canvas,filename){
   const link=document.createElement('a');link.download=filename;link.href=canvas.toDataURL('image/png');link.click();
 }
 
-document.querySelector('#png-button').addEventListener('click',()=>{
+document.querySelector('#png-button').addEventListener('click',async()=>{
   const tr=strings(snapshot.lang), slug=slugCourse(snapshot.course), multi=hasDetails(snapshot);
-  downloadCanvas(drawPage1(snapshot,tr),`KI-Regeln-${slug}${multi?'-1':''}.png`);
-  if(multi) setTimeout(()=>downloadCanvas(drawPage2(snapshot,tr),`KI-Regeln-${slug}-2.png`),150);
+  const logoImage=document.querySelector('#ur-logo');
+  if(activeTheme===themes.chair&&!logoImage.complete) await logoImage.decode();
+  downloadCanvas(drawPage1(snapshot,tr,logoImage),`KI-Regeln-${slug}${multi?'-1':''}.png`);
+  if(multi) setTimeout(()=>downloadCanvas(drawPage2(snapshot,tr,logoImage),`KI-Regeln-${slug}-2.png`),150);
   showToast(t().imageReady);
 });
 
@@ -260,16 +276,29 @@ function hex(color){ let c=color.replace('#','').toUpperCase(); if(c.length===3)
 
 function addSlideHeader(slide,tr,s,date,title){
   const th=activeTheme;
-  slide.addText(tr.formTitle,{x:0.4,y:0.22,w:6,h:0.3,fontSize:11,bold:true,color:hex(th.accent),...font(th)});
-  slide.addText(title.slice(0,60),{x:0.4,y:0.5,w:6.2,h:0.55,fontSize:26,bold:true,color:hex(th.ink),...font(th)});
-  slide.addText(`${s.lecturer}\n${s.semester}\n${date}`,{x:6.6,y:0.2,w:3.0,h:0.7,fontSize:10,color:hex(th.muted),align:'right',...font(th)});
-  slide.addShape('rect',{x:0.4,y:0.95,w:9.2,h:0.03,fill:{color:hex(th.accent)},line:{type:'none'}});
+  if(th===themes.chair){
+    const r=.215/16*10,barX=10*r,barW=(10-barX)/2,logoH=4*r,logoW=logoH*1792/1328,right=3*r;
+    slide.addImage({path:logoUrl,x:3*r,y:r,w:logoW,h:logoH});
+    slide.addShape('rect',{x:barX,y:0,w:barW,h:3*r,fill:{color:'8E8E8D'},line:{type:'none'}});
+    slide.addShape('rect',{x:barX+barW,y:0,w:barW,h:3*r,fill:{color:hex(th.accent)},line:{type:'none'}});
+    slide.addText(s.lecturer,{x:barX+barW,y:3.7*r,w:barW-right,h:.14,fontSize:7.5,bold:true,color:'000000',align:'right',...font(th)});
+    slide.addText(tr.subtitle.toUpperCase(),{x:barX+barW,y:4.75*r,w:barW-right,h:.13,fontSize:6.5,bold:true,color:'000000',align:'right',...font(th)});
+    slide.addText(tr.formTitle.toUpperCase(),{x:barX,y:0.88,w:5.3,h:0.22,fontSize:8.5,bold:true,color:hex(th.accentDark),...font(th)});
+    slide.addText(title.slice(0,60),{x:barX,y:1.08,w:5.3,h:0.48,fontSize:20,bold:true,color:'595958',...font(th)});
+    slide.addText(`${s.semester}\n${date}`,{x:6.65,y:0.88,w:10-right-6.65,h:0.45,fontSize:8.5,color:hex(th.muted),align:'right',...font(th)});
+  } else {
+    slide.addText(tr.formTitle,{x:0.4,y:0.22,w:6,h:0.3,fontSize:11,bold:true,color:hex(th.accent),...font(th)});
+    slide.addText(title.slice(0,60),{x:0.4,y:0.5,w:6.2,h:0.55,fontSize:26,bold:true,color:hex(th.ink),...font(th)});
+    slide.addText(`${s.lecturer}\n${s.semester}\n${date}`,{x:6.6,y:0.2,w:3.0,h:0.7,fontSize:10,color:hex(th.muted),align:'right',...font(th)});
+    slide.addShape('rect',{x:0.4,y:0.95,w:9.2,h:0.03,fill:{color:hex(th.accent)},line:{type:'none'}});
+  }
 }
 function addSlideFooter(slide,tr,n,total){
   const th=activeTheme;
-  slide.addShape('rect',{x:0.4,y:5.32,w:9.2,h:0.02,fill:{color:hex(th.ink)},line:{type:'none'}});
-  if(total>1) slide.addText(`${tr.pageLabel} ${n}/${total}`,{x:0.4,y:5.38,w:2,h:0.22,fontSize:8,color:hex(th.muted),...font(th)});
-  slide.addText(tr.footer,{x:5.6,y:5.38,w:4.0,h:0.22,fontSize:7,color:hex(th.muted),align:'right',...font(th)});
+  const left=th===themes.chair?10*(.215/16*10):.4,right=th===themes.chair?3*(.215/16*10):.4,width=10-left-right;
+  slide.addShape('rect',{x:left,y:5.32,w:width,h:0.02,fill:{color:hex(th.ink)},line:{type:'none'}});
+  if(total>1) slide.addText(`${tr.pageLabel} ${n}/${total}`,{x:left,y:5.38,w:2,h:0.22,fontSize:8,color:hex(th.muted),...font(th)});
+  slide.addText(tr.footer,{x:10-right-4,y:5.38,w:4,h:0.22,fontSize:7,color:hex(th.muted),align:'right',...font(th)});
 }
 
 function addPolicySlide(pres,tr,s,date,total){
@@ -278,6 +307,7 @@ function addPolicySlide(pres,tr,s,date,total){
   addSlideHeader(slide,tr,s,date,s.course);
   const columns=[s.areas.slice(0,6),s.areas.slice(6,12)];
   const names=[tr.areas.slice(0,6),tr.areas.slice(6,12)];
+  const cd=th===themes.chair,r=.215/16*10,left=cd?10*r:.4,right=cd?3*r:.4,gap=cd?.3:.3,colW=(10-left-right-gap)/2;
   columns.forEach((col,c)=>{
     const rows=col.map((a,i)=>{
       const st=statuses[a.status];
@@ -286,14 +316,14 @@ function addPolicySlide(pres,tr,s,date,total){
         {text:st.glyph,options:{fontSize:12,bold:true,align:'center',valign:'middle',fill:{color:hex(st.color)},color:hex(st.fg),...font(th)}}
       ];
     });
-    slide.addTable(rows,{x:0.4+c*4.7,y:1.15,w:4.4,colW:[3.75,0.65],border:{type:'solid',color:hex(th.line),pt:0.5},autoPage:false});
+    slide.addTable(rows,{x:left+c*(colW+gap),y:cd?1.65:1.15,w:colW,colW:[colW-.55,.55],border:{type:'solid',color:hex(th.line),pt:0.5},autoPage:false});
   });
   const docs=s.docs.map((on,i)=>on?tr.docs[i]:null).filter(Boolean).join(' · ')||tr.noSelection;
-  slide.addShape('rect',{x:0.4,y:4.55,w:9.2,h:0.6,fill:{color:hex(th.soft)},line:{type:'none'}});
-  slide.addText(tr.documentation.toUpperCase(),{x:0.55,y:4.6,w:8.9,h:0.22,fontSize:9,bold:true,color:hex(th.ink),...font(th)});
-  slide.addText(docs,{x:0.55,y:4.83,w:8.9,h:0.28,fontSize:9,color:hex(th.ink),...font(th)});
+  const contentW=10-left-right;slide.addShape('rect',{x:left,y:4.55,w:contentW,h:0.6,fill:{color:hex(th.soft)},line:{type:'none'}});
+  slide.addText(tr.documentation.toUpperCase(),{x:left+.15,y:4.6,w:contentW-.3,h:0.22,fontSize:9,bold:true,color:hex(th.ink),...font(th)});
+  slide.addText(docs,{x:left+.15,y:4.83,w:contentW-.3,h:0.28,fontSize:9,color:hex(th.ink),...font(th)});
   const legend=['allow','limit','deny'].map(k=>`${statuses[k].glyph} ${tr.status[k]}`).join('     ');
-  slide.addText(legend,{x:0.4,y:5.38,w:5,h:0.22,fontSize:8,color:hex(th.muted),...font(th)});
+  slide.addText(legend,{x:left,y:5.38,w:5,h:0.22,fontSize:8,color:hex(th.muted),...font(th)});
   addSlideFooter(slide,tr,1,total);
 }
 
@@ -301,12 +331,12 @@ function addDetailSlide(pres,tr,s,date,total){
   const th=activeTheme;
   const slide=pres.addSlide();
   addSlideHeader(slide,tr,s,date,tr.notesHeading);
-  let y=1.2;
+  const cd=th===themes.chair,r=.215/16*10,left=cd?10*r:.4,right=cd?3*r:.4;let y=cd?1.65:1.2;
   [[tr.examplesAllowed,s.allowedExamples],[tr.examplesDenied,s.forbiddenExamples],[tr.moreNotes,s.notes]].filter(([,v])=>v.trim()).forEach(([label,value])=>{
     const text=value.trim(), lines=Math.max(1,Math.ceil(text.length/95))+text.split('\n').length-1, bodyH=Math.min(2.4,Math.max(0.35,lines*0.26));
-    slide.addText(label.toUpperCase(),{x:0.4,y,w:9.2,h:0.28,fontSize:12,bold:true,color:hex(th.accent),...font(th)});
+    slide.addText(label.toUpperCase(),{x:left,y,w:10-left-right,h:0.28,fontSize:12,bold:true,color:hex(th.accent),...font(th)});
     y+=0.32;
-    slide.addText(text,{x:0.4,y,w:9.2,h:bodyH,fontSize:11,color:hex(th.ink),...font(th)});
+    slide.addText(text,{x:left,y,w:10-left-right,h:bodyH,fontSize:11,color:hex(th.ink),...font(th)});
     y+=bodyH+0.25;
   });
   addSlideFooter(slide,tr,2,total);

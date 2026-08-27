@@ -34,7 +34,7 @@ Im Repository muss unter **Settings → Pages → Build and deployment** einmali
 ## Funktionen
 
 - Deutsch und Englisch
-- umschaltbares Design: neutral (Standard, passt sich fremden Folienvorlagen an) oder CD (Lehrstuhl-Look), wirkt auf die ganze Anwendung inkl. Export
+- umschaltbares Design: neutral (Standard, passt sich fremden Folienvorlagen an) oder CD (UR-Corporate-Design in Glutrot für den Lehrstuhl für Medieninformatik), wirkt auf die ganze Anwendung inkl. Export
 - granulare Ampelregeln für 12 Einsatzbereiche (immer sichtbar)
 - gegeneinander ausgeschlossene Basisoptionen für die Dokumentation
 - optionale zweite Seite mit Beispielen & Hinweisen, sobald eines der Felder ausgefüllt ist
