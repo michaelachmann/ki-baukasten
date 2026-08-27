@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Webanwendung zur Kommunikation von Regeln für den Einsatz generativer KI in Lehrveranstaltungen.">
   <title>KI-Baukasten</title>
   <script vite-ignore src="%BASE_URL%assets/vendor/pptxgen.bundle.js"></script>
 </head>
@@ -20,10 +21,10 @@
     </div>
     <div class="neutral-brand"><strong>KI-Baukasten</strong><span id="brand-subtitle">Lehrstuhl Medieninformatik</span></div>
     <div class="topbar-actions">
-      <div class="theme-switch language-switch" id="theme-switch" aria-label="Design"></div>
-      <div class="language-switch" aria-label="Sprache">
-        <button type="button" data-lang="de" class="active">DE</button>
-        <button type="button" data-lang="en">EN</button>
+      <div class="theme-switch language-switch" id="theme-switch" role="group" aria-label="Design"></div>
+      <div class="language-switch" role="group" aria-label="Sprache">
+        <button type="button" data-lang="de" class="active" aria-pressed="true">DE</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
       <button type="button" class="button secondary" id="reset-button">Zurücksetzen</button>
     </div>
@@ -43,7 +44,7 @@
           <label><span data-label="course">Kurs / Modul</span><input name="course" value="Usability Engineering"></label>
           <label><span data-label="lecturer">Dozent/in</span><input name="lecturer" value="Prof. Dr. M. Musterfrau"></label>
           <label><span data-label="semester">Semester</span><input name="semester" value="Wintersemester 2026/27"></label>
-          <label><span data-label="date">Stand</span><input name="date" type="date" value="2026-08-11"></label>
+          <label><span data-label="date">Stand</span><input name="date" type="date"></label>
         </div>
       </section>
 
@@ -82,13 +83,13 @@
           <p class="eyebrow" id="preview-eyebrow">Vorschau</p>
           <h2 id="preview-title">Fertig für Ihre Folien</h2>
         </div>
-        <div class="tabs" role="tablist">
-          <button type="button" role="tab" data-tab="visual" class="active">Ampel</button>
-          <button type="button" role="tab" data-tab="text">Text</button>
+        <div class="tabs" role="tablist" aria-label="Ansicht">
+          <button type="button" role="tab" id="tab-visual" data-tab="visual" class="active" aria-selected="true" aria-controls="visual-pane">Ampel</button>
+          <button type="button" role="tab" id="tab-text" data-tab="text" aria-selected="false" aria-controls="text-pane">Text</button>
         </div>
       </div>
 
-      <div id="visual-pane" class="tab-pane active">
+      <div id="visual-pane" class="tab-pane active" role="tabpanel" aria-labelledby="tab-visual">
         <article id="policy-card" class="policy-card"></article>
         <article id="policy-card-2" class="policy-card" hidden></article>
         <div class="export-actions">
@@ -97,7 +98,7 @@
           <button type="button" class="button secondary" id="copy-text-button">Text kopieren</button>
         </div>
       </div>
-      <div id="text-pane" class="tab-pane">
+      <div id="text-pane" class="tab-pane" role="tabpanel" aria-labelledby="tab-text">
         <pre id="text-output"></pre>
         <button type="button" class="button primary" id="copy-text-button-alt">Text kopieren</button>
       </div>

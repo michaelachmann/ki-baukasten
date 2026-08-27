@@ -64,7 +64,7 @@ function font(th){ return th.fontPptx?{fontFace:th.fontPptx}:{}; }
 
 const translations = {
   de: {
-    formTitle:'KI-Nutzung im Kurs', intro:'Legen Sie verständliche Regeln für den Einsatz generativer KI fest.', meta:'Kursdaten', areasHeading:'Erlaubte Einsatzbereiche', areasHint:'Wählen Sie für jeden Bereich eine Ampelfarbe und ergänzen Sie bei Bedarf eine Bedingung.', docsHeading:'Dokumentation', notesHeading:'Beispiele & Hinweise', notesOptional:'Optional – nur bei zusätzlichem Erklärungsbedarf', preview:'Vorschau', ready:'Fertig für Ihre Folien', reset:'Zurücksetzen', generate:'Vorschau bestätigen', live:'Live-Vorschau aktiv', updated:'Vorschau ist aktuell', download:'PNG herunterladen', pptx:'PPTX herunterladen', copy:'Text kopieren', copied:'Text kopiert', imageReady:'PNG wurde erstellt', pptxReady:'PPTX wurde erstellt', visual:'Ampel', text:'Text', pageLabel:'Seite',
+    formTitle:'KI-Nutzung im Kurs', intro:'Legen Sie verständliche Regeln für den Einsatz generativer KI fest.', meta:'Kursdaten', areasHeading:'Erlaubte Einsatzbereiche', areasHint:'Wählen Sie für jeden Bereich eine Ampelfarbe und ergänzen Sie bei Bedarf eine Bedingung.', docsHeading:'Dokumentation', notesHeading:'Beispiele & Hinweise', notesOptional:'Optional – nur bei zusätzlichem Erklärungsbedarf', preview:'Vorschau', ready:'Fertig für Ihre Folien', reset:'Zurücksetzen', generate:'Vorschau bestätigen', live:'Live-Vorschau aktiv', updated:'Vorschau ist aktuell', download:'PNG herunterladen', pptx:'PPTX herunterladen', copy:'Text kopieren', copied:'Text kopiert', imageReady:'PNG wurde erstellt', pptxReady:'PPTX wurde erstellt', error:'Export fehlgeschlagen', visual:'Ampel', text:'Text', pageLabel:'Seite',
     fields:{course:'Kurs / Modul',lecturer:'Dozent/in',semester:'Semester',date:'Stand',allowedExamples:'Beispiele erlaubter Nutzung',forbiddenExamples:'Beispiele nicht erlaubter Nutzung',notes:'Weitere Hinweise'},
     status:{allow:'Erlaubt',limit:'Eingeschränkt',deny:'Nicht erlaubt'},
     areas:['Recherche & Literaturarbeit','Texte lesen, verstehen & zusammenfassen','Brainstorming & Ideensammlung','Sprachliche Überarbeitung','Lernunterstützung & Prüfungsvorbereitung','Textgenerierung (Abschnitte / Kapitel)','Programmierung: Erklärung & Fehlersuche','Programmierung: wesentliche Lösungsteile','Studien- & Forschungsdesign','Datenanalyse & -interpretation','Bildgenerierung','Präsentationserstellung'],
@@ -72,7 +72,7 @@ const translations = {
     notePlaceholder:'Bedingung / Anmerkung (optional)', documentation:'Dokumentation', examplesAllowed:'Beispiele erlaubter Nutzung', examplesDenied:'Beispiele nicht erlaubter Nutzung', moreNotes:'Weitere Hinweise', noSelection:'Keine Angabe'
   },
   en: {
-    formTitle:'AI use in this course', intro:'Define clear rules for the use of generative AI.', meta:'Course details', areasHeading:'Permitted areas of use', areasHint:'Choose a signal for each area and add a condition if needed.', docsHeading:'Documentation', notesHeading:'Examples & notes', notesOptional:'Optional – only when additional explanation is useful', preview:'Preview', ready:'Ready for your slides', reset:'Reset', generate:'Confirm preview', live:'Live preview active', updated:'Preview is up to date', download:'Download PNG', pptx:'Download PPTX', copy:'Copy text', copied:'Text copied', imageReady:'PNG created', pptxReady:'PPTX created', visual:'Signal', text:'Text', pageLabel:'Page',
+    formTitle:'AI use in this course', intro:'Define clear rules for the use of generative AI.', meta:'Course details', areasHeading:'Permitted areas of use', areasHint:'Choose a signal for each area and add a condition if needed.', docsHeading:'Documentation', notesHeading:'Examples & notes', notesOptional:'Optional – only when additional explanation is useful', preview:'Preview', ready:'Ready for your slides', reset:'Reset', generate:'Confirm preview', live:'Live preview active', updated:'Preview is up to date', download:'Download PNG', pptx:'Download PPTX', copy:'Copy text', copied:'Text copied', imageReady:'PNG created', pptxReady:'PPTX created', error:'Export failed', visual:'Signal', text:'Text', pageLabel:'Page',
     fields:{course:'Course / module',lecturer:'Lecturer',semester:'Semester',date:'Valid as of',allowedExamples:'Examples of permitted use',forbiddenExamples:'Examples of non-permitted use',notes:'Additional notes'},
     status:{allow:'Allowed',limit:'Restricted',deny:'Not allowed'},
     areas:['Research & literature work','Reading, understanding & summarising','Brainstorming & idea generation','Language editing & proofreading','Learning support & exam preparation','Text generation (sections / chapters)','Programming: explanation & debugging','Programming: substantial solution parts','Study & research design','Data analysis & interpretation','Image generation','Presentation creation'],
@@ -81,10 +81,10 @@ const translations = {
   }
 };
 
-const defaults = () => ({
-  lang:'de',
-  theme:'neutral',
-  areas:['allow','allow','allow','limit','allow','deny','limit','deny','limit','limit','deny','allow'].map((status, i) => ({status,note:i===3?'Nur Grammatik & Stil, keine neuen Inhalte':''})),
+const defaults = (lang = 'de', theme = 'neutral') => ({
+  lang,
+  theme,
+  areas:['allow','allow','allow','limit','allow','deny','limit','deny','limit','limit','deny','allow'].map((status, i) => ({status,note:i===3?(lang==='de'?'Nur Grammatik & Stil, keine neuen Inhalte':'Grammar & style only, no new content'):''})),
   docs:[true,false,false,true,false,true]
 });
 let state = defaults();
@@ -117,12 +117,19 @@ function renderFormControls(){
   document.querySelector('#pptx-button').textContent=tr.pptx;
   document.querySelectorAll('#copy-text-button,#copy-text-button-alt').forEach(el=>el.textContent=tr.copy);
   document.querySelectorAll('[data-label]').forEach(el=>el.textContent=tr.fields[el.dataset.label]);
-  document.querySelectorAll('[data-lang]').forEach(el=>el.classList.toggle('active',el.dataset.lang===state.lang));
-  document.querySelector('#theme-switch').innerHTML=Object.keys(themes).map(id=>`<button type="button" data-theme="${id}" class="${state.theme===id?'active':''}">${themes[id].label[state.lang]}</button>`).join('');
+  document.querySelectorAll('[data-lang]').forEach(el=>{
+    const isActive=el.dataset.lang===state.lang;
+    el.classList.toggle('active',isActive);
+    el.setAttribute('aria-pressed',isActive?'true':'false');
+  });
+  document.querySelector('#theme-switch').innerHTML=Object.keys(themes).map(id=>{
+    const isActive=state.theme===id;
+    return `<button type="button" data-theme="${id}" class="${isActive?'active':''}" aria-pressed="${isActive?'true':'false'}">${themes[id].label[state.lang]}</button>`;
+  }).join('');
   document.querySelector('[data-tab="visual"]').textContent=tr.visual;
   document.querySelector('[data-tab="text"]').textContent=tr.text;
 
-  document.querySelector('#area-options').innerHTML=tr.areas.map((name,i)=>`<div class="area-row"><span class="area-name">${name}</span><div class="status-picker" aria-label="${name}">${['allow','limit','deny'].map(status=>`<button type="button" class="status-button ${state.areas[i].status===status?'active':''}" data-area="${i}" data-status="${status}" title="${tr.status[status]}" style="${cssStatus(status)}">${statuses[status].glyph}</button>`).join('')}</div><input class="area-note" data-note="${i}" value="${escapeHtml(state.areas[i].note)}" placeholder="${tr.notePlaceholder}"></div>`).join('');
+  document.querySelector('#area-options').innerHTML=tr.areas.map((name,i)=>`<div class="area-row"><span class="area-name">${name}</span><div class="status-picker" role="group" aria-label="${name}">${['allow','limit','deny'].map(status=>`<button type="button" class="status-button ${state.areas[i].status===status?'active':''}" data-area="${i}" data-status="${status}" title="${tr.status[status]}" aria-label="${name}: ${tr.status[status]}" aria-pressed="${state.areas[i].status===status?'true':'false'}" style="${cssStatus(status)}">${statuses[status].glyph}</button>`).join('')}</div><input class="area-note" data-note="${i}" value="${escapeHtml(state.areas[i].note)}" placeholder="${tr.notePlaceholder}" aria-label="${name}: ${tr.notePlaceholder}"></div>`).join('');
   document.querySelector('#documentation-options').innerHTML=tr.docs.map((label,i)=>`<label class="check-option ${state.docs[2]&&i>2?'disabled':''}"><input type="checkbox" data-doc="${i}" ${state.docs[i]?'checked':''} ${state.docs[2]&&i>2?'disabled':''}><span>${label}</span></label>`).join('');
 }
 
@@ -220,11 +227,27 @@ document.addEventListener('click',e=>{
   const status=e.target.closest('[data-status]');
   if(status){ state.areas[+status.dataset.area].status=status.dataset.status; renderFormControls(); updateLive(); }
   const lang=e.target.closest('[data-lang]');
-  if(lang){ state.lang=lang.dataset.lang; renderFormControls(); snapshot=getFormData();renderOutput(); }
+  if(lang){
+    const prevLang=state.lang;
+    state.lang=lang.dataset.lang;
+    if(prevLang==='de'&&state.lang==='en'&&state.areas[3]?.note==='Nur Grammatik & Stil, keine neuen Inhalte'){
+      state.areas[3].note='Grammar & style only, no new content';
+    } else if(prevLang==='en'&&state.lang==='de'&&state.areas[3]?.note==='Grammar & style only, no new content'){
+      state.areas[3].note='Nur Grammatik & Stil, keine neuen Inhalte';
+    }
+    renderFormControls(); snapshot=getFormData(); renderOutput();
+  }
   const theme=e.target.closest('button[data-theme]');
   if(theme){ state.theme=theme.dataset.theme; applyTheme(state.theme); }
   const tab=e.target.closest('[data-tab]');
-  if(tab){ document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===tab));document.querySelectorAll('.tab-pane').forEach(x=>x.classList.toggle('active',x.id===`${tab.dataset.tab}-pane`)); }
+  if(tab){
+    document.querySelectorAll('[data-tab]').forEach(x=>{
+      const isActive=x===tab;
+      x.classList.toggle('active',isActive);
+      x.setAttribute('aria-selected',isActive?'true':'false');
+    });
+    document.querySelectorAll('.tab-pane').forEach(x=>x.classList.toggle('active',x.id===`${tab.dataset.tab}-pane`));
+  }
 });
 
 document.addEventListener('change',e=>{
@@ -239,7 +262,13 @@ document.addEventListener('change',e=>{
 document.addEventListener('input',e=>{ if(e.target.matches('[data-note]')) state.areas[+e.target.dataset.note].note=e.target.value; scheduleLiveUpdate(); });
 form.addEventListener('input',scheduleLiveUpdate);
 form.addEventListener('submit',e=>{e.preventDefault();updateLive();showToast(t().updated)});
-document.querySelector('#reset-button').addEventListener('click',()=>{state=defaults();form.reset();applyTheme(state.theme)});
+document.querySelector('#reset-button').addEventListener('click',()=>{
+  state=defaults(state.lang,state.theme);
+  form.reset();
+  const dInput=form.querySelector('input[name="date"]');
+  if(dInput) dInput.value=new Date().toISOString().slice(0,10);
+  applyTheme(state.theme);
+});
 
 async function copyText(){ try{await navigator.clipboard.writeText(buildText(snapshot));showToast(t().copied)}catch{showToast(buildText(snapshot))} }
 document.querySelectorAll('#copy-text-button,#copy-text-button-alt').forEach(el=>el.addEventListener('click',copyText));
@@ -378,12 +407,17 @@ function downloadCanvas(canvas,filename){
 }
 
 document.querySelector('#png-button').addEventListener('click',async()=>{
-  const tr=strings(snapshot.lang), slug=slugCourse(snapshot.course), multi=hasDetails(snapshot);
-  const logoImage=document.querySelector('#ur-logo');
-  if(activeTheme===themes.chair&&!logoImage.complete) await logoImage.decode();
-  downloadCanvas(drawPage1(snapshot,tr,logoImage),`KI-Regeln-${slug}${multi?'-1':''}.png`);
-  if(multi) setTimeout(()=>downloadCanvas(drawPage2(snapshot,tr,logoImage),`KI-Regeln-${slug}-2.png`),150);
-  showToast(t().imageReady);
+  try {
+    const tr=strings(snapshot.lang), slug=slugCourse(snapshot.course), multi=hasDetails(snapshot);
+    const logoImage=document.querySelector('#ur-logo');
+    if(activeTheme===themes.chair&&!logoImage.complete) await logoImage.decode().catch(()=>{});
+    downloadCanvas(drawPage1(snapshot,tr,logoImage),`KI-Regeln-${slug}${multi?'-1':''}.png`);
+    if(multi) setTimeout(()=>downloadCanvas(drawPage2(snapshot,tr,logoImage),`KI-Regeln-${slug}-2.png`),250);
+    showToast(t().imageReady);
+  } catch(err) {
+    console.error('PNG export error:', err);
+    showToast(t().error);
+  }
 });
 
 function hex(color){ let c=color.replace('#','').toUpperCase(); if(c.length===3) c=c.split('').map(ch=>ch+ch).join(''); return c; }
@@ -477,17 +511,30 @@ function addDetailSlide(pres,tr,s,date,total){
   addSlideFooter(slide,tr,2,total);
 }
 
-document.querySelector('#pptx-button').addEventListener('click',()=>{
-  const tr=strings(snapshot.lang);
-  const date=formatDate(snapshot.date,snapshot.lang);
-  const total=hasDetails(snapshot)?2:1;
-  const pres=new PptxGenJS();
-  pres.defineLayout({name:'KIB169',width:10,height:5.625});
-  pres.layout='KIB169';
-  addPolicySlide(pres,tr,snapshot,date,total);
-  if(total>1) addDetailSlide(pres,tr,snapshot,date,total);
-  pres.writeFile({fileName:`KI-Regeln-${slugCourse(snapshot.course)}.pptx`});
-  showToast(t().pptxReady);
+document.querySelector('#pptx-button').addEventListener('click',async()=>{
+  try {
+    if(typeof PptxGenJS==='undefined'){
+      throw new Error('PptxGenJS is not available');
+    }
+    const tr=strings(snapshot.lang);
+    const date=formatDate(snapshot.date,snapshot.lang);
+    const total=hasDetails(snapshot)?2:1;
+    const pres=new PptxGenJS();
+    pres.defineLayout({name:'KIB169',width:10,height:5.625});
+    pres.layout='KIB169';
+    addPolicySlide(pres,tr,snapshot,date,total);
+    if(total>1) addDetailSlide(pres,tr,snapshot,date,total);
+    await pres.writeFile({fileName:`KI-Regeln-${slugCourse(snapshot.course)}.pptx`});
+    showToast(t().pptxReady);
+  } catch(err) {
+    console.error('PPTX export error:', err);
+    showToast(t().error);
+  }
 });
+
+const dateInput=form.querySelector('input[name="date"]');
+if(dateInput&&!dateInput.value){
+  dateInput.value=new Date().toISOString().slice(0,10);
+}
 
 applyTheme(state.theme);

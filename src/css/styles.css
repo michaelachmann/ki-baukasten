@@ -9,7 +9,7 @@
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.45; }
 button, input, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
-:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 34%, transparent); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
 .topbar { min-height: var(--topbar-height); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; gap: 28px; background: var(--white); border-bottom: var(--frame-width) solid var(--frame); position: sticky; top: 0; z-index: 10; }
 .neutral-brand { display: flex; flex-direction: column; line-height: 1.1; }
