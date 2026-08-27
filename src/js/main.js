@@ -332,27 +332,43 @@ function addSlideHeader(slide,tr,s,date,title,left=.27,right=.27){
     slide.addText(title.slice(0,60),{x:barX,y:1.08,w:5.3,h:0.48,fontSize:20,bold:true,color:'595958',...font(th)});
     slide.addText(`${s.semester}\n${date}`,{x:6.65,y:0.88,w:10-right-6.65,h:0.45,fontSize:8.5,color:hex(th.muted),align:'right',...font(th)});
   } else {
-    slide.addText(tr.formTitle,{x:0.4,y:0.22,w:6,h:0.3,fontSize:11,bold:true,color:hex(th.accent),...font(th)});
-    slide.addText(title.slice(0,60),{x:0.4,y:0.5,w:6.2,h:0.55,fontSize:26,bold:true,color:hex(th.ink),...font(th)});
-    slide.addText(`${s.lecturer}\n${s.semester}\n${date}`,{x:6.6,y:0.2,w:3.0,h:0.7,fontSize:10,color:hex(th.muted),align:'right',...font(th)});
-    slide.addShape('rect',{x:0.4,y:0.95,w:9.2,h:0.03,fill:{color:hex(th.accent)},line:{type:'none'}});
+    slide.addText(tr.formTitle,{x:left,y:0.22,w:6,h:0.3,fontSize:11,bold:true,color:hex(th.accent),...font(th)});
+    slide.addText(title.slice(0,60),{x:left,y:0.5,w:6.2,h:0.55,fontSize:26,bold:true,color:hex(th.ink),...font(th)});
+    slide.addText(`${s.lecturer}\n${s.semester}\n${date}`,{x:6.6,y:0.2,w:10-right-6.6,h:0.7,fontSize:10,color:hex(th.muted),align:'right',...font(th)});
+    slide.addShape('rect',{x:left,y:0.95,w:10-left-right,h:0.03,fill:{color:hex(th.accent)},line:{type:'none'}});
   }
 }
 function addSlideFooter(slide,tr,n,total){
   const th=activeTheme;
-  const left=th===themes.chair?10*(.215/16*10):.4,right=th===themes.chair?3*(.215/16*10):.4,width=10-left-right;
+  const left=th===themes.chair?10*(.215/16*10):.27,right=th===themes.chair?3*(.215/16*10):.27,width=10-left-right;
   slide.addShape('rect',{x:left,y:5.32,w:width,h:0.02,fill:{color:hex(th.ink)},line:{type:'none'}});
   if(total>1) slide.addText(`${tr.pageLabel} ${n}/${total}`,{x:left,y:5.38,w:2,h:0.22,fontSize:8,color:hex(th.muted),...font(th)});
   slide.addText(tr.footer,{x:10-right-4,y:5.38,w:4,h:0.22,fontSize:7,color:hex(th.muted),align:'right',...font(th)});
 }
 
+// Converts a markdown subset (bullets, **bold**, *italic*) into PptxGenJS text-run objects
+// with native bullet/bold/italic formatting, ready to pass as the `text` arg of addText().
+function mdToPptxRuns(text,baseOptions){
+  const blocks=parseMarkdown(text), runs=[];
+  blocks.forEach(block=>{
+    if(!block.runs.length){ runs.push({text:'',options:{...baseOptions,breakLine:true}}); return; }
+    block.runs.forEach((r,ri)=>{
+      const isLast=ri===block.runs.length-1;
+      const options={...baseOptions,bold:!!r.bold,italic:!!r.italic,breakLine:isLast};
+      if(ri===0&&block.type==='bullet') options.bullet={indent:14};
+      runs.push({text:r.text,options});
+    });
+  });
+  return runs;
+}
+
 function addPolicySlide(pres,tr,s,date,total){
   const th=activeTheme;
   const slide=pres.addSlide();
-  addSlideHeader(slide,tr,s,date,s.course);
+  const cd=th===themes.chair,r=.215/16*10,left=cd?10*r:.27,right=cd?3*r:.27,gap=cd?.3:.3,colW=(10-left-right-gap)/2;
+  addSlideHeader(slide,tr,s,date,s.course,left,right);
   const columns=[s.areas.slice(0,6),s.areas.slice(6,12)];
   const names=[tr.areas.slice(0,6),tr.areas.slice(6,12)];
-  const cd=th===themes.chair,r=.215/16*10,left=cd?10*r:.4,right=cd?3*r:.4,gap=cd?.3:.3,colW=(10-left-right-gap)/2;
   columns.forEach((col,c)=>{
     const rows=col.map((a,i)=>{
       const st=statuses[a.status];
@@ -375,14 +391,13 @@ function addPolicySlide(pres,tr,s,date,total){
 function addDetailSlide(pres,tr,s,date,total){
   const th=activeTheme;
   const slide=pres.addSlide();
-  addSlideHeader(slide,tr,s,date,tr.notesHeading);
-  const cd=th===themes.chair,r=.215/16*10,left=cd?10*r:.4,right=cd?3*r:.4;let y=cd?1.65:1.2;
-  [[tr.examplesAllowed,s.allowedExamples],[tr.examplesDenied,s.forbiddenExamples],[tr.moreNotes,s.notes]].filter(([,v])=>v.trim()).forEach(([label,value])=>{
-    const text=value.trim(), lines=Math.max(1,Math.ceil(text.length/95))+text.split('\n').length-1, bodyH=Math.min(2.4,Math.max(0.35,lines*0.26));
-    slide.addText(label.toUpperCase(),{x:left,y,w:10-left-right,h:0.28,fontSize:12,bold:true,color:hex(th.accent),...font(th)});
-    y+=0.32;
-    slide.addText(text,{x:left,y,w:10-left-right,h:bodyH,fontSize:11,color:hex(th.ink),...font(th)});
-    y+=bodyH+0.25;
+  const cd=th===themes.chair,r=.215/16*10,left=cd?10*r:.27,right=cd?3*r:.27,top=cd?1.65:1.2,gap=.14,colW=(10-left-right-2*gap)/3,bodyH=3.4;
+  addSlideHeader(slide,tr,s,date,tr.notesHeading,left,right);
+  [[tr.examplesAllowed,s.allowedExamples],[tr.examplesDenied,s.forbiddenExamples],[tr.moreNotes,s.notes]].forEach(([label,value],i)=>{
+    const x=left+i*(colW+gap);
+    if(i>0) slide.addShape('line',{x:x-gap/2,y:top,w:0,h:bodyH,line:{color:hex(th.line),width:.75,dashType:'dash'}});
+    slide.addText(label.toUpperCase(),{x,y:top,w:colW,h:0.26,fontSize:10,bold:true,color:hex(th.accent),...font(th)});
+    if(value.trim()) slide.addText(mdToPptxRuns(value.trim(),{fontSize:10.5,color:hex(th.ink),...font(th)}),{x,y:top+0.3,w:colW,h:bodyH-0.3,valign:'top'});
   });
   addSlideFooter(slide,tr,2,total);
 }
