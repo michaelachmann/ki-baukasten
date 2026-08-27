@@ -1,3 +1,5 @@
+import './styles.css';
+
 const themes = {
   neutral: {
     label:{de:'Neutral',en:'Neutral'},
