@@ -34,6 +34,7 @@ Im Repository muss unter **Settings → Pages → Build and deployment** einmali
 ## Funktionen
 
 - Deutsch und Englisch
+- getrennte Ansichten für Lehrende und Studierende; Studierende können aus Werkzeug/Modell, Zweck, betroffenen Arbeitsschritten und Umfang eine kopierbare Angabe zur KI-Nutzung erstellen
 - umschaltbares Design: neutral (Standard, passt sich fremden Folienvorlagen an) oder CD (UR-Corporate-Design in Glutrot für den Lehrstuhl für Medieninformatik), wirkt auf die ganze Anwendung inkl. Export
 - granulare Ampelregeln für 12 Einsatzbereiche (immer sichtbar)
 - gegeneinander ausgeschlossene Basisoptionen für die Dokumentation

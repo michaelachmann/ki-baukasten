@@ -21,6 +21,10 @@
     </div>
     <div class="neutral-brand"><strong>KI-Baukasten</strong><span id="brand-subtitle">Lehrstuhl Medieninformatik</span></div>
     <div class="topbar-actions">
+      <div class="view-switch language-switch" role="group" aria-label="Ansicht">
+        <button type="button" data-view="instructor" class="active" aria-pressed="true">Lehrende</button>
+        <button type="button" data-view="student" aria-pressed="false">Studierende</button>
+      </div>
       <div class="theme-switch language-switch" id="theme-switch" role="group" aria-label="Design"></div>
       <div class="language-switch" role="group" aria-label="Sprache">
         <button type="button" data-lang="de" class="active" aria-pressed="true">DE</button>
@@ -30,7 +34,7 @@
     </div>
   </header>
 
-  <main class="app-shell">
+  <main class="app-shell" id="instructor-view">
     <form id="builder-form" class="builder">
       <div class="builder-intro">
         <p class="eyebrow">Konfiguration</p>
@@ -108,6 +112,50 @@
         <button type="button" class="button primary" id="copy-text-button-alt">Text kopieren</button>
       </div>
       <p class="toast" id="toast" role="status" aria-live="polite"></p>
+    </aside>
+  </main>
+
+  <main class="student-shell" id="student-view" hidden>
+    <form id="student-form" class="student-form">
+      <div class="builder-intro">
+        <p class="eyebrow" id="student-eyebrow">Angabe erstellen</p>
+        <h1 id="student-title">KI-Nutzung offenlegen</h1>
+        <p id="student-intro">Erstellen Sie eine kurze, nachvollziehbare Angabe für Ihre Abgabe. Maßgeblich bleiben die Regeln Ihres Kurses.</p>
+      </div>
+
+      <section>
+        <div class="section-heading"><span>01</span><h2 id="student-context-heading">Kontext</h2></div>
+        <label><span id="student-course-label">Kurs / Abgabe (optional)</span><input name="studentCourse" id="student-course" autocomplete="off" placeholder="z. B. Bachelorseminar – Hausarbeit"></label>
+      </section>
+
+      <section>
+        <div class="section-heading"><span>02</span><h2 id="student-use-heading">Ihre KI-Nutzung</h2></div>
+        <div class="student-fields">
+          <label><span id="student-tool-label">Werkzeug oder Modell</span><input name="studentTool" id="student-tool" required autocomplete="off" placeholder="z. B. ChatGPT (GPT-5)"></label>
+          <label><span id="student-purpose-label">Zweck der Nutzung</span><textarea name="studentPurpose" id="student-purpose" required placeholder="z. B. Suchbegriffe für die Literaturrecherche entwickeln"></textarea></label>
+          <label><span id="student-parts-label">Betroffene Arbeitsschritte oder Teile</span><textarea name="studentParts" id="student-parts" required placeholder="z. B. Literaturrecherche und sprachliche Überarbeitung der Einleitung"></textarea></label>
+          <label><span id="student-scope-label">Ungefährer Umfang</span><textarea name="studentScope" id="student-scope" required placeholder="z. B. drei Suchanfragen und zwei selbst verfasste Absätze"></textarea></label>
+        </div>
+      </section>
+
+      <div class="generate-row">
+        <button class="button primary" type="submit" id="student-generate-button">Angabe aktualisieren</button>
+        <span class="live-indicator"><i></i><span id="student-live-note" aria-live="polite">Live-Vorschau aktiv</span></span>
+      </div>
+    </form>
+
+    <aside class="student-output-panel">
+      <div class="student-output-inner">
+        <p class="eyebrow" id="student-preview-eyebrow">Ihre Angabe</p>
+        <h2 id="student-preview-title">Zum Einfügen in Ihre Abgabe</h2>
+        <div class="disclosure-card" aria-live="polite">
+          <p class="disclosure-context" id="student-output-context" hidden></p>
+          <p id="student-output">Füllen Sie die vier Felder aus. Ihre Angabe entsteht hier automatisch.</p>
+        </div>
+        <button type="button" class="button primary" id="student-copy-button" disabled>Angabe kopieren</button>
+        <p class="student-guidance" id="student-guidance">Prüfen Sie vor der Abgabe, ob Ihr Kurs eine andere oder ausführlichere Dokumentation verlangt.</p>
+        <p class="toast" id="student-toast" role="status" aria-live="polite"></p>
+      </div>
     </aside>
   </main>
   <script type="module" src="/js/main.js"></script>

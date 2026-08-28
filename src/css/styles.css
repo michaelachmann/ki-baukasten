@@ -26,6 +26,7 @@ button { cursor: pointer; }
 .builder-intro { margin-bottom: 42px; }
 .eyebrow { margin: 0 0 5px; color: var(--accent-dark); font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
 .builder h1 { font-size: clamp(31px, 3vw, 45px); line-height: 1; margin: 0 0 13px; letter-spacing: -.04em; }
+.student-form h1 { font-size: clamp(31px, 3vw, 45px); line-height: 1; margin: 0 0 13px; letter-spacing: -.04em; }
 .builder-intro > p:last-child { color: var(--muted); max-width: 55ch; margin: 0; }
 .builder section { border-top: var(--frame-width) solid var(--frame); padding: 21px 0 32px; }
 .section-heading { display: flex; align-items: baseline; gap: 12px; margin-bottom: 17px; }
@@ -122,6 +123,25 @@ pre { margin: 0; background: white; border: var(--frame-width) solid var(--frame
 .optional-number { color: var(--accent-dark); font-size: 12px; font-weight: 800; }
 .optional-content { padding-top: 3px; }
 
+[hidden] { display: none !important; }
+.student-shell { display: grid; grid-template-columns: minmax(440px, 1.05fr) minmax(460px, .95fr); min-height: calc(100vh - var(--topbar-height)); }
+.student-form { padding: 42px clamp(24px, 5vw, 76px) 70px; background: var(--white); border-right: 1px solid var(--line); }
+.student-form section { border-top: var(--frame-width) solid var(--frame); padding: 21px 0 32px; }
+.student-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.student-fields label:first-child { grid-column: 1 / -1; }
+.student-fields textarea { min-height: 104px; margin-bottom: 0; }
+.student-output-panel { position: sticky; top: var(--topbar-height); height: calc(100vh - var(--topbar-height)); display: grid; place-items: center; padding: 42px clamp(24px, 5vw, 76px); background: var(--paper); overflow: auto; }
+.student-output-inner { width: min(100%, 660px); }
+.student-output-inner h2 { margin: 0 0 22px; font-size: 26px; }
+.disclosure-card { min-height: 220px; margin-bottom: 16px; padding: clamp(24px, 4vw, 42px); display: flex; flex-direction: column; justify-content: center; gap: 14px; background: var(--white); border: var(--frame-width) solid var(--frame); border-left: 4px solid var(--accent-dark); box-shadow: var(--shadow); }
+.disclosure-card p { margin: 0; font-size: 18px; line-height: 1.65; }
+.disclosure-card .disclosure-context { color: var(--accent-dark); font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.student-guidance { max-width: 58ch; color: var(--muted); font-size: 12px; }
+.student-output-panel .toast { margin-top: 10px; text-align: left; }
+
+html[data-theme="chair"] .student-form section { border-top: 1px dotted #8e8e8d; }
+html[data-theme="chair"] .disclosure-card { border-color: #8e8e8d; border-left-color: #ba3339; box-shadow: 0 4px 16px rgb(68 68 68 / 10%); }
+
 html[data-theme="chair"] { --topbar-height: 88px; }
 html[data-theme="chair"] .topbar { padding: 10px 28px; border-bottom-color: #d7d7d7; }
 html[data-theme="chair"] .neutral-brand { display: none; }
@@ -153,8 +173,11 @@ html[data-theme="chair"] .documentation-strip { border-left-color: #ba3339; }
 @keyframes live-pulse { 50% { transform: scale(1.7); box-shadow: 0 0 0 7px color-mix(in srgb, var(--green) 5%, transparent); } }
 @media (max-width: 1000px) {
   .app-shell { grid-template-columns: 1fr; }
+  .student-shell { grid-template-columns: 1fr; }
   .builder { border-right: 0; }
+  .student-form { border-right: 0; }
   .output-panel { position: static; height: auto; border-top: var(--frame-width) solid var(--frame); }
+  .student-output-panel { position: static; height: auto; min-height: 520px; border-top: var(--frame-width) solid var(--frame); }
 }
 @media (max-width: 760px) {
   html[data-theme="chair"] { --topbar-height: auto; }
@@ -169,7 +192,10 @@ html[data-theme="chair"] .documentation-strip { border-left-color: #ba3339; }
   .topbar-actions { width: 100%; flex-wrap: wrap; }
   .app-shell { display: block; }
   .builder, .output-panel { padding: 28px 16px; }
+  .student-form, .student-output-panel { padding: 28px 16px; }
   .field-grid { grid-template-columns: 1fr; }
+  .student-fields { grid-template-columns: 1fr; }
+  .student-fields label:first-child { grid-column: auto; }
   .output-toolbar { align-items: flex-start; gap: 15px; }
   .card-footer { align-items: flex-start; flex-direction: column; }
   .footer-note { margin-left: 0; text-align: left; max-width: 100%; }

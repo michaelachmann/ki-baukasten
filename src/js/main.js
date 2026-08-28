@@ -69,7 +69,9 @@ const translations = {
     status:{allow:'Erlaubt',limit:'Ausdrückliche Erlaubnis nötig',deny:'Nicht erlaubt'},
     areas:['Literaturrecherche','Texte lesen & zusammenfassen','Brainstorming & Sparringpartner','Texte überarbeiten','Lernhilfe & Prüfungsvorbereitung','Texte schreiben (Abschnitte / Kapitel)','Programmieren: Erklärung & Fehlersuche','Programmieren: wesentliche Lösungsteile','Studien- & Forschungsplanung','Datenanalyse & Auswertung','Bildgenerierung','Präsentationserstellung'],
     docs:['Angabe gemäß allgemeiner KI-Richtlinie','Kurze Angabe der KI-Nutzung genügt','Keine Angabe erforderlich','Werkzeug / Modell und Zweck nennen','Betroffene Arbeitsschritte und konkreten Beitrag nennen','Vollständige Prompts oder Chatverläufe beifügen'],
-    notePlaceholder:'Bedingung / Anmerkung (optional)', documentation:'Angabe der KI-Nutzung', examplesAllowed:'Beispiele erlaubter Nutzung', examplesDenied:'Beispiele nicht erlaubter Nutzung', moreNotes:'Weitere Hinweise', guidelinesNotice:'Allgemeine KI-Richtlinie beachten'
+    notePlaceholder:'Bedingung / Anmerkung (optional)', documentation:'Angabe der KI-Nutzung', examplesAllowed:'Beispiele erlaubter Nutzung', examplesDenied:'Beispiele nicht erlaubter Nutzung', moreNotes:'Weitere Hinweise', guidelinesNotice:'Allgemeine KI-Richtlinie beachten',
+    views:{instructor:'Lehrende',student:'Studierende'},
+    student:{eyebrow:'Angabe erstellen',title:'KI-Nutzung offenlegen',intro:'Erstellen Sie eine kurze, nachvollziehbare Angabe für Ihre Abgabe. Maßgeblich bleiben die Regeln Ihres Kurses.',contextHeading:'Kontext',course:'Kurs / Abgabe (optional)',coursePlaceholder:'z. B. Bachelorseminar – Hausarbeit',useHeading:'Ihre KI-Nutzung',tool:'Werkzeug oder Modell',toolPlaceholder:'z. B. ChatGPT (GPT-5)',purpose:'Zweck der Nutzung',purposePlaceholder:'z. B. Suchbegriffe für die Literaturrecherche entwickeln',parts:'Betroffene Arbeitsschritte oder Teile',partsPlaceholder:'z. B. Literaturrecherche und sprachliche Überarbeitung der Einleitung',scope:'Ungefährer Umfang',scopePlaceholder:'z. B. drei Suchanfragen und zwei selbst verfasste Absätze',generate:'Angabe aktualisieren',live:'Live-Vorschau aktiv',preview:'Ihre Angabe',previewTitle:'Zum Einfügen in Ihre Abgabe',empty:'Füllen Sie die vier Felder aus. Ihre Angabe entsteht hier automatisch.',copy:'Angabe kopieren',copied:'Angabe kopiert',guidance:'Prüfen Sie vor der Abgabe, ob Ihr Kurs eine andere oder ausführlichere Dokumentation verlangt.'}
   },
   en: {
     formTitle:'Course rules for AI use', intro:'Specify the general AI guidelines for your course. Communicated course rules take priority.', meta:'Course details', areasHeading:'Rules by area of use', areasHint:'For each area, decide whether AI use is allowed, requires explicit permission, or is not allowed.', docsRequirementHeading:'Disclosure of AI use', docsProofHeading:'Content of the disclosure', notesHeading:'Examples & notes', notesOptional:'Optional – only when additional explanation is useful', preview:'Preview', ready:'Ready for your slides', reset:'Reset', generate:'Confirm preview', live:'Live preview active', updated:'Preview is up to date', download:'Download PNG', pptx:'Download PPTX', copy:'Copy text', copied:'Text copied', imageReady:'PNG created', pptxReady:'PPTX created', error:'Export failed', visual:'Signal', text:'Text', pageLabel:'Page',
@@ -77,7 +79,9 @@ const translations = {
     status:{allow:'Allowed',limit:'Explicit permission required',deny:'Not allowed'},
     areas:['Literature search','Reading & summarising texts','Brainstorming & sparring partner','Editing texts','Learning support & exam preparation','Writing texts (sections / chapters)','Programming: explanation & debugging','Programming: substantial solution parts','Study & research planning','Data analysis & evaluation','Image generation','Presentation creation'],
     docs:['Disclosure per the general AI guidelines','A short disclosure of AI use suffices','No disclosure required','Name the tool / model and purpose','Name the affected steps and specific contribution','Attach complete prompts or chat logs'],
-    notePlaceholder:'Condition / note (optional)', documentation:'Disclosure of AI use', examplesAllowed:'Examples of permitted use', examplesDenied:'Examples of non-permitted use', moreNotes:'Additional notes', guidelinesNotice:'Follow the general AI guidelines'
+    notePlaceholder:'Condition / note (optional)', documentation:'Disclosure of AI use', examplesAllowed:'Examples of permitted use', examplesDenied:'Examples of non-permitted use', moreNotes:'Additional notes', guidelinesNotice:'Follow the general AI guidelines',
+    views:{instructor:'Teaching staff',student:'Students'},
+    student:{eyebrow:'Create disclosure',title:'Disclose your AI use',intro:'Create a short, transparent disclosure for your submission. The rules of your course remain authoritative.',contextHeading:'Context',course:'Course / submission (optional)',coursePlaceholder:'e.g. Bachelor seminar – term paper',useHeading:'Your AI use',tool:'Tool or model',toolPlaceholder:'e.g. ChatGPT (GPT-5)',purpose:'Purpose of use',purposePlaceholder:'e.g. develop search terms for the literature review',parts:'Affected steps or parts',partsPlaceholder:'e.g. literature search and language editing of the introduction',scope:'Approximate extent',scopePlaceholder:'e.g. three search queries and two self-written paragraphs',generate:'Update disclosure',live:'Live preview active',preview:'Your disclosure',previewTitle:'Ready to paste into your submission',empty:'Complete the four fields. Your disclosure will appear here automatically.',copy:'Copy disclosure',copied:'Disclosure copied',guidance:'Before submitting, check whether your course requires a different or more detailed form of documentation.'}
   }
 };
 
@@ -89,7 +93,9 @@ const defaults = (lang = 'de', theme = 'neutral') => ({
 });
 let state = defaults();
 let snapshot = null;
+let activeView = 'instructor';
 const form = document.querySelector('#builder-form');
+const studentForm = document.querySelector('#student-form');
 
 function t(){ return strings(state.lang); }
 function cssStatus(status){ const s=statuses[status]; return `--status-color:${s.color};--status-fg:${s.fg}`; }
@@ -130,6 +136,13 @@ function renderFormControls(){
   }).join('');
   document.querySelector('[data-tab="visual"]').textContent=tr.visual;
   document.querySelector('[data-tab="text"]').textContent=tr.text;
+  document.querySelectorAll('[data-view]').forEach(el=>{
+    const isActive=el.dataset.view===activeView;
+    el.textContent=tr.views[el.dataset.view];
+    el.classList.toggle('active',isActive);
+    el.setAttribute('aria-pressed',isActive?'true':'false');
+  });
+  renderStudentControls();
 
   document.querySelector('#area-options').innerHTML=tr.areas.map((name,i)=>{
     const a=state.areas[i];
@@ -138,6 +151,63 @@ function renderFormControls(){
   }).join('');
   document.querySelector('#documentation-requirement-options').innerHTML=tr.docs.slice(0,3).map((label,i)=>`<label class="check-option"><input type="checkbox" data-doc="${i}" ${state.docs[i]?'checked':''}><span>${label}</span></label>`).join('');
   document.querySelector('#documentation-proof-options').innerHTML=tr.docs.slice(3).map((label,j)=>{const i=j+3;return `<label class="check-option ${state.docs[2]?'disabled':''}"><input type="checkbox" data-doc="${i}" ${state.docs[i]?'checked':''} ${state.docs[2]?'disabled':''}><span>${label}</span></label>`}).join('');
+}
+
+function renderStudentControls(){
+  const tr=t().student;
+  const text={
+    '#student-eyebrow':tr.eyebrow,'#student-title':tr.title,'#student-intro':tr.intro,
+    '#student-context-heading':tr.contextHeading,'#student-course-label':tr.course,
+    '#student-use-heading':tr.useHeading,'#student-tool-label':tr.tool,
+    '#student-purpose-label':tr.purpose,'#student-parts-label':tr.parts,
+    '#student-scope-label':tr.scope,'#student-generate-button':tr.generate,
+    '#student-live-note':tr.live,'#student-preview-eyebrow':tr.preview,
+    '#student-preview-title':tr.previewTitle,'#student-copy-button':tr.copy,
+    '#student-guidance':tr.guidance
+  };
+  Object.entries(text).forEach(([selector,value])=>{ document.querySelector(selector).textContent=value; });
+  const placeholders={
+    '#student-course':tr.coursePlaceholder,'#student-tool':tr.toolPlaceholder,
+    '#student-purpose':tr.purposePlaceholder,'#student-parts':tr.partsPlaceholder,
+    '#student-scope':tr.scopePlaceholder
+  };
+  Object.entries(placeholders).forEach(([selector,value])=>{ document.querySelector(selector).placeholder=value; });
+}
+
+function cleanSentencePart(value=''){
+  return value.trim().replace(/[.!?]+$/,'');
+}
+
+function getStudentData(){
+  const data=new FormData(studentForm);
+  return {course:cleanSentencePart(data.get('studentCourse')||''),tool:cleanSentencePart(data.get('studentTool')||''),purpose:cleanSentencePart(data.get('studentPurpose')||''),parts:cleanSentencePart(data.get('studentParts')||''),scope:cleanSentencePart(data.get('studentScope')||'')};
+}
+
+function buildStudentDisclosure(data){
+  if(!data.tool||!data.purpose||!data.parts||!data.scope) return '';
+  if(state.lang==='en'){
+    const context=data.course?` for “${data.course}”`:'';
+    return `In preparing this submission${context}, ${data.tool} was used for the following purpose: ${data.purpose}. The use concerned ${data.parts} and covered approximately ${data.scope}.`;
+  }
+  const context=data.course?` für „${data.course}“`:'';
+  return `Bei der Erstellung dieser Abgabe${context} wurde ${data.tool} für folgenden Zweck eingesetzt: ${data.purpose}. Die Nutzung betraf ${data.parts} und umfasste ungefähr ${data.scope}.`;
+}
+
+function renderStudentOutput(){
+  const tr=t().student, data=getStudentData(), disclosure=buildStudentDisclosure(data);
+  const context=document.querySelector('#student-output-context');
+  context.textContent=data.course;
+  context.hidden=!data.course;
+  document.querySelector('#student-output').textContent=disclosure||tr.empty;
+  document.querySelector('#student-copy-button').disabled=!disclosure;
+}
+
+function switchView(view){
+  activeView=view==='student'?'student':'instructor';
+  document.querySelector('#instructor-view').hidden=activeView!=='instructor';
+  document.querySelector('#student-view').hidden=activeView!=='student';
+  renderFormControls();
+  if(activeView==='student') document.querySelector('#student-tool').focus();
 }
 
 function escapeHtml(value=''){ return value.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -242,8 +312,10 @@ document.addEventListener('click',e=>{
     } else if(prevLang==='en'&&state.lang==='de'&&state.areas[3]?.note==='Grammar & style only, no new content'){
       state.areas[3].note='Nur Grammatik & Stil, keine neuen Inhalte';
     }
-    renderFormControls(); snapshot=getFormData(); renderOutput();
+    renderFormControls(); snapshot=getFormData(); renderOutput(); renderStudentOutput();
   }
+  const view=e.target.closest('[data-view]');
+  if(view) switchView(view.dataset.view);
   const theme=e.target.closest('button[data-theme]');
   if(theme){ state.theme=theme.dataset.theme; applyTheme(state.theme); }
   const tab=e.target.closest('[data-tab]');
@@ -270,12 +342,43 @@ document.addEventListener('input',e=>{ if(e.target.matches('[data-note]')) state
 form.addEventListener('input',scheduleLiveUpdate);
 form.addEventListener('submit',e=>{e.preventDefault();updateLive();showToast(t().updated)});
 document.querySelector('#reset-button').addEventListener('click',()=>{
+  if(activeView==='student'){
+    studentForm.reset();
+    renderStudentOutput();
+    document.querySelector('#student-tool').focus();
+    return;
+  }
   state=defaults(state.lang,state.theme);
   form.reset();
   const dInput=form.querySelector('input[name="date"]');
   if(dInput) dInput.value=new Date().toISOString().slice(0,10);
   applyTheme(state.theme);
 });
+
+studentForm.addEventListener('input',renderStudentOutput);
+studentForm.addEventListener('submit',e=>{
+  e.preventDefault();
+  renderStudentOutput();
+  const firstInvalid=studentForm.querySelector(':invalid');
+  if(firstInvalid) firstInvalid.focus();
+});
+document.querySelector('#student-copy-button').addEventListener('click',async()=>{
+  const disclosure=buildStudentDisclosure(getStudentData());
+  if(!disclosure) return;
+  try {
+    await navigator.clipboard.writeText(disclosure);
+    showStudentToast(t().student.copied);
+  } catch {
+    showStudentToast(disclosure);
+  }
+});
+
+function showStudentToast(message){
+  const el=document.querySelector('#student-toast');
+  el.textContent=message;
+  clearTimeout(showStudentToast.timer);
+  showStudentToast.timer=setTimeout(()=>{el.textContent='';},2500);
+}
 
 async function copyText(){ try{await navigator.clipboard.writeText(buildText(snapshot));showToast(t().copied)}catch{showToast(buildText(snapshot))} }
 document.querySelectorAll('#copy-text-button,#copy-text-button-alt').forEach(el=>el.addEventListener('click',copyText));
@@ -549,3 +652,4 @@ if(dateInput&&!dateInput.value){
 }
 
 applyTheme(state.theme);
+renderStudentOutput();
