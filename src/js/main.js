@@ -71,7 +71,7 @@ const translations = {
     docs:['Angabe gemäß allgemeiner KI-Richtlinie','Kurze Angabe der KI-Nutzung genügt','Keine Angabe erforderlich','Werkzeug / Modell und Zweck nennen','Betroffene Arbeitsschritte und konkreten Beitrag nennen','Vollständige Prompts oder Chatverläufe beifügen'],
     notePlaceholder:'Bedingung / Anmerkung (optional)', documentation:'Angabe der KI-Nutzung', examplesAllowed:'Beispiele erlaubter Nutzung', examplesDenied:'Beispiele nicht erlaubter Nutzung', moreNotes:'Weitere Hinweise', guidelinesNotice:'Allgemeine KI-Richtlinie beachten',
     views:{instructor:'Lehrende',student:'Studierende'},
-    student:{eyebrow:'Angabe erstellen',title:'KI-Nutzung offenlegen',intro:'Erstellen Sie eine kurze, nachvollziehbare Angabe für Ihre Abgabe. Maßgeblich bleiben die Regeln Ihres Kurses.',contextHeading:'Kontext',course:'Kurs / Abgabe (optional)',coursePlaceholder:'z. B. Bachelorseminar – Hausarbeit',useHeading:'Ihre KI-Nutzung',tool:'Werkzeug oder Modell',toolPlaceholder:'z. B. ChatGPT (GPT-5)',purpose:'Zweck der Nutzung',purposePlaceholder:'z. B. Suchbegriffe für die Literaturrecherche entwickeln',parts:'Betroffene Arbeitsschritte oder Teile',partsPlaceholder:'z. B. Literaturrecherche und sprachliche Überarbeitung der Einleitung',scope:'Ungefährer Umfang',scopePlaceholder:'z. B. drei Suchanfragen und zwei selbst verfasste Absätze',generate:'Angabe aktualisieren',live:'Live-Vorschau aktiv',preview:'Ihre Angabe',previewTitle:'Zum Einfügen in Ihre Abgabe',empty:'Füllen Sie die vier Felder aus. Ihre Angabe entsteht hier automatisch.',copy:'Angabe kopieren',copied:'Angabe kopiert',guidance:'Prüfen Sie vor der Abgabe, ob Ihr Kurs eine andere oder ausführlichere Dokumentation verlangt.'}
+    student:{eyebrow:'Angabe erstellen',title:'KI-Nutzung offenlegen',intro:'Erstellen Sie Schritt für Schritt eine kurze, nachvollziehbare Angabe. Maßgeblich bleiben die Regeln Ihres Kurses.',contextHeading:'Kontext',course:'Kurs / Abgabe (optional)',coursePlaceholder:'z. B. Bachelorseminar – Hausarbeit',useHeading:'Ihre KI-Nutzung',tool:'Werkzeug oder Modell',toolPlaceholder:'z. B. ChatGPT (GPT-5)',purpose:'Anwendungsfelder',purposeHint:'Mehrfachauswahl möglich.',purposes:['Lernhilfe','Brainstorming & Sparring','Literaturrecherche','Texte lesen & zusammenfassen','Studien- & Forschungsplanung','Texte schreiben','Texte überarbeiten','Programmieren','Bildgenerierung'],purposeDetail:'Zweck genauer beschreiben (optional)',purposeDetailPlaceholder:'z. B. passende Suchbegriffe für die Forschungsfrage entwickeln',parts:'Betroffene Arbeitsschritte',stepsHint:'Wählen Sie alle Schritte aus, bei denen KI beteiligt war.',steps:['Ideenfindung','Planung & Gliederung','Recherche','Entwurf & Erstellung','Überarbeitung & Prüfung','Technische Umsetzung'],partsDetail:'Betroffene Teile der Abgabe (optional)',partsDetailPlaceholder:'z. B. Einleitung, Kapitel 3 und Auswertungsskript',scope:'Ungefährer Umfang',scopeMin:'Punktuell',scopeMax:'Umfangreich',scopeLevels:['Punktuell','Gelegentlich','Wiederholt','Umfangreich'],scopeDescriptions:['Eine einzelne oder klar abgegrenzte Nutzung.','Wenige Nutzungen in einzelnen Arbeitsschritten.','Mehrere Nutzungen über verschiedene Arbeitsschritte hinweg.','KI war an größeren Teilen des Arbeitsprozesses beteiligt.'],scopePhrases:['punktuell','gelegentlich','wiederholt','umfangreich'],scopeDetail:'Umfang konkretisieren (optional)',scopeDetailPlaceholder:'z. B. drei Suchanfragen und zwei Textabsätze',generate:'Angabe aktualisieren',live:'Live-Vorschau aktiv',preview:'Ihre Angabe',previewTitle:'Zum Einfügen in Ihre Abgabe',progress:n=>`${n} von 3 Angaben vollständig`,empty:'Wählen Sie Werkzeug, Anwendungsfelder und Arbeitsschritte aus. Ihre Angabe entsteht hier automatisch.',copy:'Angabe kopieren',copied:'Angabe kopiert',guidance:'Prüfen Sie vor der Abgabe, ob Ihr Kurs eine andere oder ausführlichere Dokumentation verlangt.'}
   },
   en: {
     formTitle:'Course rules for AI use', intro:'Specify the general AI guidelines for your course. Communicated course rules take priority.', meta:'Course details', areasHeading:'Rules by area of use', areasHint:'For each area, decide whether AI use is allowed, requires explicit permission, or is not allowed.', docsRequirementHeading:'Disclosure of AI use', docsProofHeading:'Content of the disclosure', notesHeading:'Examples & notes', notesOptional:'Optional – only when additional explanation is useful', preview:'Preview', ready:'Ready for your slides', reset:'Reset', generate:'Confirm preview', live:'Live preview active', updated:'Preview is up to date', download:'Download PNG', pptx:'Download PPTX', copy:'Copy text', copied:'Text copied', imageReady:'PNG created', pptxReady:'PPTX created', error:'Export failed', visual:'Signal', text:'Text', pageLabel:'Page',
@@ -81,7 +81,7 @@ const translations = {
     docs:['Disclosure per the general AI guidelines','A short disclosure of AI use suffices','No disclosure required','Name the tool / model and purpose','Name the affected steps and specific contribution','Attach complete prompts or chat logs'],
     notePlaceholder:'Condition / note (optional)', documentation:'Disclosure of AI use', examplesAllowed:'Examples of permitted use', examplesDenied:'Examples of non-permitted use', moreNotes:'Additional notes', guidelinesNotice:'Follow the general AI guidelines',
     views:{instructor:'Teaching staff',student:'Students'},
-    student:{eyebrow:'Create disclosure',title:'Disclose your AI use',intro:'Create a short, transparent disclosure for your submission. The rules of your course remain authoritative.',contextHeading:'Context',course:'Course / submission (optional)',coursePlaceholder:'e.g. Bachelor seminar – term paper',useHeading:'Your AI use',tool:'Tool or model',toolPlaceholder:'e.g. ChatGPT (GPT-5)',purpose:'Purpose of use',purposePlaceholder:'e.g. develop search terms for the literature review',parts:'Affected steps or parts',partsPlaceholder:'e.g. literature search and language editing of the introduction',scope:'Approximate extent',scopePlaceholder:'e.g. three search queries and two self-written paragraphs',generate:'Update disclosure',live:'Live preview active',preview:'Your disclosure',previewTitle:'Ready to paste into your submission',empty:'Complete the four fields. Your disclosure will appear here automatically.',copy:'Copy disclosure',copied:'Disclosure copied',guidance:'Before submitting, check whether your course requires a different or more detailed form of documentation.'}
+    student:{eyebrow:'Create disclosure',title:'Disclose your AI use',intro:'Create a short, transparent disclosure step by step. The rules of your course remain authoritative.',contextHeading:'Context',course:'Course / submission (optional)',coursePlaceholder:'e.g. Bachelor seminar – term paper',useHeading:'Your AI use',tool:'Tool or model',toolPlaceholder:'e.g. ChatGPT (GPT-5)',purpose:'Areas of use',purposeHint:'Select all that apply.',purposes:['Learning support','Brainstorming & sparring','Literature search','Reading & summarising texts','Study & research planning','Writing texts','Editing texts','Programming','Image generation'],purposeDetail:'Describe the purpose in more detail (optional)',purposeDetailPlaceholder:'e.g. develop suitable search terms for the research question',parts:'Affected work steps',stepsHint:'Select every step in which AI was involved.',steps:['Ideation','Planning & outlining','Research','Drafting & creation','Editing & review','Technical implementation'],partsDetail:'Affected parts of the submission (optional)',partsDetailPlaceholder:'e.g. introduction, chapter 3 and analysis script',scope:'Approximate extent',scopeMin:'Point use',scopeMax:'Extensive',scopeLevels:['Point use','Occasional','Repeated','Extensive'],scopeDescriptions:['One individual or clearly delimited use.','A few uses in individual work steps.','Several uses across different work steps.','AI was involved in substantial parts of the work process.'],scopePhrases:['at a single point','occasionally','repeatedly','extensively'],scopeDetail:'Specify the extent (optional)',scopeDetailPlaceholder:'e.g. three search queries and two paragraphs',generate:'Update disclosure',live:'Live preview active',preview:'Your disclosure',previewTitle:'Ready to paste into your submission',progress:n=>`${n} of 3 details complete`,empty:'Select a tool, areas of use and work steps. Your disclosure will appear here automatically.',copy:'Copy disclosure',copied:'Disclosure copied',guidance:'Before submitting, check whether your course requires a different or more detailed form of documentation.'}
   }
 };
 
@@ -155,12 +155,17 @@ function renderFormControls(){
 
 function renderStudentControls(){
   const tr=t().student;
+  const selectedPurposes=new Set(new FormData(studentForm).getAll('studentPurpose'));
+  const selectedSteps=new Set(new FormData(studentForm).getAll('studentStep'));
   const text={
     '#student-eyebrow':tr.eyebrow,'#student-title':tr.title,'#student-intro':tr.intro,
     '#student-context-heading':tr.contextHeading,'#student-course-label':tr.course,
     '#student-use-heading':tr.useHeading,'#student-tool-label':tr.tool,
-    '#student-purpose-label':tr.purpose,'#student-parts-label':tr.parts,
-    '#student-scope-label':tr.scope,'#student-generate-button':tr.generate,
+    '#student-purpose-label':tr.purpose,'#student-purpose-hint':tr.purposeHint,
+    '#student-purpose-detail-label':tr.purposeDetail,'#student-parts-label':tr.parts,
+    '#student-steps-hint':tr.stepsHint,'#student-parts-detail-label':tr.partsDetail,
+    '#student-scope-label':tr.scope,'#student-scope-min':tr.scopeMin,'#student-scope-max':tr.scopeMax,
+    '#student-scope-detail-label':tr.scopeDetail,'#student-generate-button':tr.generate,
     '#student-live-note':tr.live,'#student-preview-eyebrow':tr.preview,
     '#student-preview-title':tr.previewTitle,'#student-copy-button':tr.copy,
     '#student-guidance':tr.guidance
@@ -168,10 +173,19 @@ function renderStudentControls(){
   Object.entries(text).forEach(([selector,value])=>{ document.querySelector(selector).textContent=value; });
   const placeholders={
     '#student-course':tr.coursePlaceholder,'#student-tool':tr.toolPlaceholder,
-    '#student-purpose':tr.purposePlaceholder,'#student-parts':tr.partsPlaceholder,
-    '#student-scope':tr.scopePlaceholder
+    '#student-purpose-detail':tr.purposeDetailPlaceholder,'#student-parts-detail':tr.partsDetailPlaceholder,
+    '#student-scope-detail':tr.scopeDetailPlaceholder
   };
   Object.entries(placeholders).forEach(([selector,value])=>{ document.querySelector(selector).placeholder=value; });
+  document.querySelector('#student-purpose-options').innerHTML=tr.purposes.map((label,i)=>`<label class="student-check-option"><input type="checkbox" name="studentPurpose" value="${i}" ${selectedPurposes.has(String(i))?'checked':''}><span>${label}</span></label>`).join('');
+  document.querySelector('#student-step-options').innerHTML=tr.steps.map((label,i)=>`<label class="student-check-option"><input type="checkbox" name="studentStep" value="${i}" ${selectedSteps.has(String(i))?'checked':''}><span>${label}</span></label>`).join('');
+  renderStudentScope();
+}
+
+function renderStudentScope(){
+  const tr=t().student, value=Number(document.querySelector('#student-scope').value)-1;
+  document.querySelector('#student-scope-output').textContent=tr.scopeLevels[value];
+  document.querySelector('#student-scope-description').textContent=tr.scopeDescriptions[value];
 }
 
 function cleanSentencePart(value=''){
@@ -180,26 +194,41 @@ function cleanSentencePart(value=''){
 
 function getStudentData(){
   const data=new FormData(studentForm);
-  return {course:cleanSentencePart(data.get('studentCourse')||''),tool:cleanSentencePart(data.get('studentTool')||''),purpose:cleanSentencePart(data.get('studentPurpose')||''),parts:cleanSentencePart(data.get('studentParts')||''),scope:cleanSentencePart(data.get('studentScope')||'')};
+  return {course:cleanSentencePart(data.get('studentCourse')||''),tool:cleanSentencePart(data.get('studentTool')||''),purposes:data.getAll('studentPurpose').map(Number),purposeDetail:cleanSentencePart(data.get('studentPurposeDetail')||''),steps:data.getAll('studentStep').map(Number),partsDetail:cleanSentencePart(data.get('studentPartsDetail')||''),scope:Number(data.get('studentScope')||2),scopeDetail:cleanSentencePart(data.get('studentScopeDetail')||'')};
+}
+
+function joinNatural(items){
+  return new Intl.ListFormat(state.lang,{style:'long',type:'conjunction'}).format(items);
 }
 
 function buildStudentDisclosure(data){
-  if(!data.tool||!data.purpose||!data.parts||!data.scope) return '';
+  if(!data.tool||!data.purposes.length||!data.steps.length) return '';
+  const tr=t().student, purposes=joinNatural(data.purposes.map(i=>tr.purposes[i])), steps=joinNatural(data.steps.map(i=>tr.steps[i]));
   if(state.lang==='en'){
     const context=data.course?` for “${data.course}”`:'';
-    return `In preparing this submission${context}, ${data.tool} was used for the following purpose: ${data.purpose}. The use concerned ${data.parts} and covered approximately ${data.scope}.`;
+    const purposeDetail=data.purposeDetail?` More specifically, it was used to ${data.purposeDetail}.`:'';
+    const partsDetail=data.partsDetail?`, specifically ${data.partsDetail}`:'';
+    const scopeDetail=data.scopeDetail?` (${data.scopeDetail})`:'';
+    return `In preparing this submission${context}, ${data.tool} was used in the following areas: ${purposes}.${purposeDetail} The use concerned ${steps}${partsDetail}. AI was used ${tr.scopePhrases[data.scope-1]}${scopeDetail}.`;
   }
   const context=data.course?` für „${data.course}“`:'';
-  return `Bei der Erstellung dieser Abgabe${context} wurde ${data.tool} für folgenden Zweck eingesetzt: ${data.purpose}. Die Nutzung betraf ${data.parts} und umfasste ungefähr ${data.scope}.`;
+  const purposeDetail=data.purposeDetail?` Konkret wurde es eingesetzt, um ${data.purposeDetail}.`:'';
+  const partsDetail=data.partsDetail?`, insbesondere ${data.partsDetail}`:'';
+  const scopeDetail=data.scopeDetail?` (${data.scopeDetail})`:'';
+  return `Bei der Erstellung dieser Abgabe${context} wurde ${data.tool} in folgenden Anwendungsfeldern eingesetzt: ${purposes}.${purposeDetail} Die Nutzung betraf ${steps}${partsDetail}. KI wurde ${tr.scopePhrases[data.scope-1]} eingesetzt${scopeDetail}.`;
 }
 
 function renderStudentOutput(){
   const tr=t().student, data=getStudentData(), disclosure=buildStudentDisclosure(data);
+  const completed=Number(!!data.tool)+Number(!!data.purposes.length)+Number(!!data.steps.length);
   const context=document.querySelector('#student-output-context');
   context.textContent=data.course;
   context.hidden=!data.course;
   document.querySelector('#student-output').textContent=disclosure||tr.empty;
   document.querySelector('#student-copy-button').disabled=!disclosure;
+  document.querySelector('#student-progress').value=completed;
+  document.querySelector('#student-progress-label').textContent=tr.progress(completed);
+  renderStudentScope();
 }
 
 function switchView(view){
@@ -338,12 +367,15 @@ document.addEventListener('change',e=>{
     renderFormControls();updateLive();
   }
 });
-document.addEventListener('input',e=>{ if(e.target.matches('[data-note]')) state.areas[+e.target.dataset.note].note=e.target.value; scheduleLiveUpdate(); });
+document.addEventListener('input',e=>{ if(e.target.matches('[data-note]')) state.areas[+e.target.dataset.note].note=e.target.value; });
 form.addEventListener('input',scheduleLiveUpdate);
 form.addEventListener('submit',e=>{e.preventDefault();updateLive();showToast(t().updated)});
 document.querySelector('#reset-button').addEventListener('click',()=>{
   if(activeView==='student'){
     studentForm.reset();
+    studentForm.querySelectorAll('[name="studentPurpose"],[name="studentStep"]').forEach(input=>{input.checked=false;input.defaultChecked=false;});
+    document.querySelector('#student-scope').value='2';
+    document.querySelectorAll('.student-choice-group.invalid').forEach(el=>el.classList.remove('invalid'));
     renderStudentOutput();
     document.querySelector('#student-tool').focus();
     return;
@@ -355,12 +387,22 @@ document.querySelector('#reset-button').addEventListener('click',()=>{
   applyTheme(state.theme);
 });
 
-studentForm.addEventListener('input',renderStudentOutput);
+studentForm.addEventListener('input',()=>{
+  const data=getStudentData();
+  if(data.purposes.length) document.querySelector('#student-purpose-group').classList.remove('invalid');
+  if(data.steps.length) document.querySelector('#student-steps-group').classList.remove('invalid');
+  renderStudentOutput();
+});
 studentForm.addEventListener('submit',e=>{
   e.preventDefault();
+  const data=getStudentData();
+  document.querySelector('#student-purpose-group').classList.toggle('invalid',!data.purposes.length);
+  document.querySelector('#student-steps-group').classList.toggle('invalid',!data.steps.length);
   renderStudentOutput();
   const firstInvalid=studentForm.querySelector(':invalid');
   if(firstInvalid) firstInvalid.focus();
+  else if(!data.purposes.length) studentForm.querySelector('[name="studentPurpose"]').focus();
+  else if(!data.steps.length) studentForm.querySelector('[name="studentStep"]').focus();
 });
 document.querySelector('#student-copy-button').addEventListener('click',async()=>{
   const disclosure=buildStudentDisclosure(getStudentData());

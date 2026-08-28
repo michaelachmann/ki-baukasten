@@ -132,9 +132,30 @@
         <div class="section-heading"><span>02</span><h2 id="student-use-heading">Ihre KI-Nutzung</h2></div>
         <div class="student-fields">
           <label><span id="student-tool-label">Werkzeug oder Modell</span><input name="studentTool" id="student-tool" required autocomplete="off" placeholder="z. B. ChatGPT (GPT-5)"></label>
-          <label><span id="student-purpose-label">Zweck der Nutzung</span><textarea name="studentPurpose" id="student-purpose" required placeholder="z. B. Suchbegriffe für die Literaturrecherche entwickeln"></textarea></label>
-          <label><span id="student-parts-label">Betroffene Arbeitsschritte oder Teile</span><textarea name="studentParts" id="student-parts" required placeholder="z. B. Literaturrecherche und sprachliche Überarbeitung der Einleitung"></textarea></label>
-          <label><span id="student-scope-label">Ungefährer Umfang</span><textarea name="studentScope" id="student-scope" required placeholder="z. B. drei Suchanfragen und zwei selbst verfasste Absätze"></textarea></label>
+
+          <fieldset class="student-choice-group" id="student-purpose-group">
+            <legend id="student-purpose-label">Anwendungsfelder</legend>
+            <p class="hint" id="student-purpose-hint">Mehrfachauswahl möglich.</p>
+            <div class="student-check-grid" id="student-purpose-options"></div>
+          </fieldset>
+
+          <label><span id="student-purpose-detail-label">Zweck genauer beschreiben (optional)</span><textarea name="studentPurposeDetail" id="student-purpose-detail" placeholder="z. B. passende Suchbegriffe für die Forschungsfrage entwickeln"></textarea></label>
+
+          <fieldset class="student-choice-group" id="student-steps-group">
+            <legend id="student-parts-label">Betroffene Arbeitsschritte</legend>
+            <p class="hint" id="student-steps-hint">Wählen Sie alle Schritte aus, bei denen KI beteiligt war.</p>
+            <div class="student-check-grid compact" id="student-step-options"></div>
+          </fieldset>
+
+          <label><span id="student-parts-detail-label">Betroffene Teile der Abgabe (optional)</span><textarea name="studentPartsDetail" id="student-parts-detail" placeholder="z. B. Einleitung, Kapitel 3 und Auswertungsskript"></textarea></label>
+
+          <div class="student-scope-group">
+            <div class="scope-heading"><label for="student-scope" id="student-scope-label">Ungefährer Umfang</label><output for="student-scope" id="student-scope-output">Gelegentlich</output></div>
+            <input name="studentScope" id="student-scope" type="range" min="1" max="4" step="1" value="2">
+            <div class="scope-scale" aria-hidden="true"><span id="student-scope-min">Punktuell</span><span id="student-scope-max">Umfangreich</span></div>
+            <p class="scope-description" id="student-scope-description"></p>
+            <label><span id="student-scope-detail-label">Umfang konkretisieren (optional)</span><input name="studentScopeDetail" id="student-scope-detail" autocomplete="off" placeholder="z. B. drei Suchanfragen und zwei Textabsätze"></label>
+          </div>
         </div>
       </section>
 
@@ -148,6 +169,7 @@
       <div class="student-output-inner">
         <p class="eyebrow" id="student-preview-eyebrow">Ihre Angabe</p>
         <h2 id="student-preview-title">Zum Einfügen in Ihre Abgabe</h2>
+        <div class="student-completeness"><progress id="student-progress" max="3" value="0"></progress><span id="student-progress-label">0 von 3 Angaben vollständig</span></div>
         <div class="disclosure-card" aria-live="polite">
           <p class="disclosure-context" id="student-output-context" hidden></p>
           <p id="student-output">Füllen Sie die vier Felder aus. Ihre Angabe entsteht hier automatisch.</p>

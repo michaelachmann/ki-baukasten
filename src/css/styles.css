@@ -127,9 +127,25 @@ pre { margin: 0; background: white; border: var(--frame-width) solid var(--frame
 .student-shell { display: grid; grid-template-columns: minmax(440px, 1.05fr) minmax(460px, .95fr); min-height: calc(100vh - var(--topbar-height)); }
 .student-form { padding: 42px clamp(24px, 5vw, 76px) 70px; background: var(--white); border-right: 1px solid var(--line); }
 .student-form section { border-top: var(--frame-width) solid var(--frame); padding: 21px 0 32px; }
-.student-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.student-fields label:first-child { grid-column: 1 / -1; }
+.student-fields { display: grid; gap: 25px; }
 .student-fields textarea { min-height: 104px; margin-bottom: 0; }
+.student-choice-group { min-width: 0; margin: 0; padding: 0; border: 0; }
+.student-choice-group legend, .student-scope-group > .scope-heading label { display: block; margin: 0 0 5px; padding: 0; font-size: 12px; font-weight: 600; }
+.student-choice-group .hint { margin: 0 0 10px; }
+.student-check-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.student-check-option { min-width: 0; display: flex; align-items: center; gap: 9px; padding: 10px; border: 1px solid var(--line); background: var(--white); cursor: pointer; font-size: 12px; line-height: 1.25; }
+.student-check-option:hover { border-color: var(--accent-dark); }
+.student-check-option:has(input:checked) { border-color: var(--accent-dark); background: var(--soft); box-shadow: inset 3px 0 0 var(--accent-dark); }
+.student-check-option input { width: 17px; height: 17px; margin: 0; flex: none; accent-color: var(--accent-dark); }
+.student-choice-group.invalid .student-check-grid { outline: 2px solid var(--red); outline-offset: 2px; }
+.student-scope-group { display: grid; gap: 8px; }
+.scope-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.scope-heading output { color: var(--accent-dark); font-size: 12px; font-weight: 800; }
+.student-scope-group input[type="range"] { height: 28px; margin: 0; padding: 0; border: 0; background: transparent; accent-color: var(--accent-dark); cursor: pointer; }
+.scope-scale { display: flex; justify-content: space-between; color: var(--muted); font-size: 10px; }
+.scope-description { min-height: 18px; margin: 0 0 6px; color: var(--muted); font-size: 12px; }
+.student-completeness { display: flex; align-items: center; gap: 12px; margin: -10px 0 18px; color: var(--muted); font-size: 11px; font-weight: 700; }
+.student-completeness progress { width: 92px; height: 7px; border: 0; accent-color: var(--accent-dark); }
 .student-output-panel { position: sticky; top: var(--topbar-height); height: calc(100vh - var(--topbar-height)); display: grid; place-items: center; padding: 42px clamp(24px, 5vw, 76px); background: var(--paper); overflow: auto; }
 .student-output-inner { width: min(100%, 660px); }
 .student-output-inner h2 { margin: 0 0 22px; font-size: 26px; }
@@ -194,8 +210,7 @@ html[data-theme="chair"] .documentation-strip { border-left-color: #ba3339; }
   .builder, .output-panel { padding: 28px 16px; }
   .student-form, .student-output-panel { padding: 28px 16px; }
   .field-grid { grid-template-columns: 1fr; }
-  .student-fields { grid-template-columns: 1fr; }
-  .student-fields label:first-child { grid-column: auto; }
+  .student-check-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .output-toolbar { align-items: flex-start; gap: 15px; }
   .card-footer { align-items: flex-start; flex-direction: column; }
   .footer-note { margin-left: 0; text-align: left; max-width: 100%; }
