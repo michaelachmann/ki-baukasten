@@ -13,8 +13,8 @@ const themes = {
     statuses:{ allow:{glyph:'✓',color:'#2f7d4f',fg:'#ffffff'},
                limit:{glyph:'!',color:'#b8860b',fg:'#1f2124'},
                deny:{glyph:'×',color:'#b03a2b',fg:'#ffffff'} },
-    strings:{ de:{subtitle:'Lehrveranstaltung', footer:'Kursregeln haben Vorrang vor der allgemeinen KI-Richtlinie.'},
-              en:{subtitle:'Course', footer:'Course rules take priority over the general AI guidelines.'} }
+    strings:{ de:{subtitle:'Lehrstuhl für Medieninformatik', footer:'Kursregeln haben Vorrang vor der allgemeinen KI-Richtlinie.'},
+              en:{subtitle:'Chair of Media Informatics', footer:'Course rules take priority over the general AI guidelines.'} }
   },
   chair: {
     label:{de:'CD',en:'CD'},
@@ -28,8 +28,8 @@ const themes = {
     statuses:{ allow:{glyph:'✓',color:'#19733b',fg:'#fff'},
                limit:{glyph:'!',color:'#d99800',fg:'#201e1d'},
                deny:{glyph:'×',color:'#c93320',fg:'#fff'} },
-    strings:{ de:{subtitle:'Lehrstuhl für Medieninformatik', footer:'Kursregeln haben Vorrang · Lehrstuhl für Medieninformatik'},
-              en:{subtitle:'Chair of Media Informatics', footer:'Course rules take priority · Chair of Media Informatics'} }
+    strings:{ de:{subtitle:'Lehrstuhl für Medieninformatik', footer:'Kursregeln haben Vorrang vor der allgemeinen KI-Richtlinie.'},
+              en:{subtitle:'Chair of Media Informatics', footer:'Course rules take priority over the general AI guidelines.'} }
   }
 };
 let activeTheme = themes.neutral;
@@ -66,7 +66,7 @@ const translations = {
   de: {
     formTitle:'Kursregeln zur KI-Nutzung', intro:'Konkretisieren Sie die allgemeine KI-Richtlinie für Ihre Lehrveranstaltung. Die kommunizierten Kursregeln haben Vorrang.', meta:'Kursdaten', areasHeading:'Nutzungsregeln nach Anwendungsfeld', areasHint:'Legen Sie für jedes Anwendungsfeld fest, ob die Nutzung erlaubt ist, eine ausdrückliche Erlaubnis erfordert oder nicht erlaubt ist.', docsRequirementHeading:'Angabe der KI-Nutzung', docsProofHeading:'Inhalt der Angabe', notesHeading:'Beispiele & Hinweise', notesOptional:'Optional – nur bei zusätzlichem Erklärungsbedarf', preview:'Vorschau', ready:'Fertig für Ihre Folien', reset:'Zurücksetzen', generate:'Vorschau bestätigen', live:'Live-Vorschau aktiv', updated:'Vorschau ist aktuell', download:'PNG herunterladen', pptx:'PPTX herunterladen', copy:'Text kopieren', copied:'Text kopiert', imageReady:'PNG wurde erstellt', pptxReady:'PPTX wurde erstellt', error:'Export fehlgeschlagen', visual:'Ampel', text:'Text', pageLabel:'Seite',
     fields:{course:'Kurs / Modul',lecturer:'Dozierende',semester:'Semester',date:'Stand',allowedExamples:'Beispiele erlaubter Nutzung',forbiddenExamples:'Beispiele nicht erlaubter Nutzung',notes:'Weitere Hinweise'},
-    status:{allow:'Erlaubt',limit:'Ausdrückliche Erlaubnis nötig',deny:'Nicht erlaubt'},
+    status:{allow:'Erlaubt',limit:'Mit Einschränkungen erlaubt',deny:'Nicht erlaubt'},
     areas:['Literaturrecherche','Texte lesen & zusammenfassen','Brainstorming & Sparringpartner','Texte überarbeiten','Lernhilfe & Prüfungsvorbereitung','Texte schreiben (Abschnitte / Kapitel)','Programmieren: Erklärung & Fehlersuche','Programmieren: wesentliche Lösungsteile','Studien- & Forschungsplanung','Datenanalyse & Auswertung','Bildgenerierung','Präsentationserstellung'],
     docs:['Angabe gemäß allgemeiner KI-Richtlinie','Kurze Angabe der KI-Nutzung genügt','Keine Angabe erforderlich','Werkzeug / Modell und Zweck nennen','Betroffene Arbeitsschritte und konkreten Beitrag nennen','Vollständige Prompts oder Chatverläufe beifügen'],
     notePlaceholder:'Bedingung / Anmerkung (optional)', documentation:'Angabe der KI-Nutzung', examplesAllowed:'Beispiele erlaubter Nutzung', examplesDenied:'Beispiele nicht erlaubter Nutzung', moreNotes:'Weitere Hinweise', guidelinesNotice:'Allgemeine KI-Richtlinie beachten',
@@ -76,7 +76,7 @@ const translations = {
   en: {
     formTitle:'Course rules for AI use', intro:'Specify the general AI guidelines for your course. Communicated course rules take priority.', meta:'Course details', areasHeading:'Rules by area of use', areasHint:'For each area, decide whether AI use is allowed, requires explicit permission, or is not allowed.', docsRequirementHeading:'Disclosure of AI use', docsProofHeading:'Content of the disclosure', notesHeading:'Examples & notes', notesOptional:'Optional – only when additional explanation is useful', preview:'Preview', ready:'Ready for your slides', reset:'Reset', generate:'Confirm preview', live:'Live preview active', updated:'Preview is up to date', download:'Download PNG', pptx:'Download PPTX', copy:'Copy text', copied:'Text copied', imageReady:'PNG created', pptxReady:'PPTX created', error:'Export failed', visual:'Signal', text:'Text', pageLabel:'Page',
     fields:{course:'Course / module',lecturer:'Teaching staff',semester:'Semester',date:'Valid as of',allowedExamples:'Examples of permitted use',forbiddenExamples:'Examples of non-permitted use',notes:'Additional notes'},
-    status:{allow:'Allowed',limit:'Explicit permission required',deny:'Not allowed'},
+    status:{allow:'Allowed',limit:'Allowed with limitations',deny:'Not allowed'},
     areas:['Literature search','Reading & summarising texts','Brainstorming & sparring partner','Editing texts','Learning support & exam preparation','Writing texts (sections / chapters)','Programming: explanation & debugging','Programming: substantial solution parts','Study & research planning','Data analysis & evaluation','Image generation','Presentation creation'],
     docs:['Disclosure per the general AI guidelines','A short disclosure of AI use suffices','No disclosure required','Name the tool / model and purpose','Name the affected steps and specific contribution','Attach complete prompts or chat logs'],
     notePlaceholder:'Condition / note (optional)', documentation:'Disclosure of AI use', examplesAllowed:'Examples of permitted use', examplesDenied:'Examples of non-permitted use', moreNotes:'Additional notes', guidelinesNotice:'Follow the general AI guidelines',
